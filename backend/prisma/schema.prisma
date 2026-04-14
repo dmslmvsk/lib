@@ -6,6 +6,24 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  password String
+
+  Role Role @default(USER)
+
+  borrowedBooks Book[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Library {
   id        String   @id @default(uuid())
   name      String
@@ -38,6 +56,11 @@ model Book {
 
   shelfId   String
   shelf     Shelf    @relation(fields: [shelfId], references: [id], onDelete: Cascade)
+
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+
 }
 
 model Genre {
