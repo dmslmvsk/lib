@@ -19,7 +19,7 @@ export const getById = async (req:Request, res:Response) => {
     }
 		const author = await AuthorService.getById(id);
 		if(!author) {
-			return res.status(400).json({ error: "Author not found" })
+			return res.status(404).json({ error: "Author not found" })
 		}
 		
 		res.json(author)

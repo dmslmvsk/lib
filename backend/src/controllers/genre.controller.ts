@@ -33,7 +33,7 @@ export const getById = async(req:Request, res:Response) => {
     }
 		const genre = await GenreService.getById(id);
 		if(!genre) {
-			return res.status(400).json({ error: "Genre not found" })
+			return res.status(404).json({ error: "Genre not found" })
 		}
 		
 		res.json(genre)

@@ -20,7 +20,7 @@ export const getById = async (req:Request, res:Response) => {
 		}
 		const shelf = await ShelfService.getById(id);
 		if(!shelf){
-			return res.status(400).json({error:"Shelfe not found"})
+			return res.status(404).json({error:"Shelfe not found"})
 		}
 		res.json(shelf);
 	}
