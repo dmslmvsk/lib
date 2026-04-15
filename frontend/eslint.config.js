@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    'react-refresh/only-export-components': [
+    'warn',
+    { allowConstantExport: true }, // Разрешает экспорт констант вроде Route
+  ],
   },
 ])
