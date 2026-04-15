@@ -6,6 +6,8 @@ import libraryRoutes from "./routes/library.routes.js"
 import genreRoutes from "./routes/genre.routes.js"
 import bookRoutes from "./routes/book.routes.js"
 import shelfRoutes from "./routes/shelf.routes.js"
+import authRoutes from "./routes/auth.routes.js"
+
 const app = express();
 
 app.use(express.json());
@@ -20,5 +22,5 @@ app.use("/libraries",libraryRoutes);
 app.use("/genres",genreRoutes);
 app.use("/books",bookRoutes);
 app.use("/shelves",shelfRoutes);
-
+app.use("/auth",authRoutes)
 export default app

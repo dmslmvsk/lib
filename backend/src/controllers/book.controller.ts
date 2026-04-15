@@ -1,5 +1,5 @@
 import type { Request,Response } from "express";
-import { BookService } from "./book.service.js";
+import { BookService } from "../services/book.service.js";
 
 export const getBooks = async (req:Request, res:Response) => {
 	try{
