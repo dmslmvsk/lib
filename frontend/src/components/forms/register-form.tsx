@@ -20,23 +20,23 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
-export const loginSchema = z.object({
+export const registerSchema = z.object({
   email: z.email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
 })
 
-export type LoginFormData = z.infer<typeof loginSchema>
+export type RegisterFormData = z.infer<typeof registerSchema>
 
-interface LoginFormProps {
-  onSubmit: (data: LoginFormData) => Promise<void>
+interface RegisterFormProps {
+  onSubmit: (data: RegisterFormData) => Promise<void>
 }
 
-export function LoginForm({onSubmit} : LoginFormProps) {
+export function RegisterForm({onSubmit} : RegisterFormProps) {
 
   const [showPassword, setShowPassword] = useState(false)
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -49,9 +49,9 @@ export function LoginForm({onSubmit} : LoginFormProps) {
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
       <Card className="w-full max-w-95 rounded-sm border-muted shadow-sm animate-in fade-in duration-500">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-xl font-bold tracking-tight">Login</CardTitle>
+          <CardTitle className="text-xl font-bold tracking-tight">Register</CardTitle>
           <CardDescription className="text-md">
-            Enter your credentials to access the library
+            Create an account to access the library
           </CardDescription>
         </CardHeader>
         
@@ -59,7 +59,7 @@ export function LoginForm({onSubmit} : LoginFormProps) {
           <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FieldGroup className="grid gap-3">
               
-              <Controller
+              <Controller 
                 name="email"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -75,7 +75,7 @@ export function LoginForm({onSubmit} : LoginFormProps) {
                         className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1"
                         placeholder="name@example.com"
                         disabled={isLoading}
-                        autoComplete="off"
+												autoComplete="off"
                       />
                     </div>
                     {fieldState.invalid && (
@@ -104,7 +104,7 @@ export function LoginForm({onSubmit} : LoginFormProps) {
                         className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1"
                         placeholder="••••••••"
                         disabled={isLoading}
-                        autoComplete="off"
+												autoComplete="off"
                       />
                       <button
                       type="button"
@@ -140,13 +140,13 @@ export function LoginForm({onSubmit} : LoginFormProps) {
             className="w-full h-10 rounded-sm bg-primary text-md font-medium transition-all hover:cursor-pointer duration-300"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign In"}
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign Up"}
           </Button>
           
           <div className="text-center text-md text-muted-foreground">
-            No account?{" "}
-            <a href="/register" className="text-foreground font-medium hover:underline duration-300">
-              Create one
+            Already have an account?{" "}
+            <a href="/login" className="text-foreground font-medium hover:underline duration-300">
+              Sign in
             </a>
           </div>
         </CardFooter>
