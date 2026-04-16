@@ -1,17 +1,35 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate,redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 import {api} from "@/api/axios"
 import { useAuthStore } from '@/store/useAuthStore'
 import { LoginForm, type LoginFormData } from '@/components/forms/login-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
+const loginSearchSchema = z.object({
+  reason: z.string().optional(),
+})
+
 export const Route = createFileRoute('/login')({
+  validateSearch: loginSearchSchema,
+  beforeLoad: ({ context }) => {
+    if (context.auth.isAuthenticated) {
+      throw redirect({ to: '/', search: {
+    		reason: 'authenticated',
+  }, })
+    }
+  },
+  onEnter: ({ search }) => {
+    if (search.reason === 'auth_required') {
+      toast.error("Please log in to access your profile")
+    }
+  },
   component: Login,
 })
 
 function Login() {
   const navigate = useNavigate()
   const {setAuth} = useAuthStore()
-
+  
   const handleLoginSubmit = async (data: LoginFormData) => {
     try{
       const response = await api.post("/auth/login",data)

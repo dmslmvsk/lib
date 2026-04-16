@@ -5,8 +5,10 @@ import "./index.css"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
+import { useAuthStore } from "./store/useAuthStore"
+import { Toaster } from "sonner"
 
-const router = createRouter({ routeTree })
+const router = createRouter({ routeTree, context: { auth: undefined!} })
 
 
 declare module '@tanstack/react-router' {
@@ -15,10 +17,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+function App() {
+  const { user, token } = useAuthStore()
+  const isAuthenticated = !!token
+
+  return (
+    <ThemeProvider>
+      <Toaster richColors position="top-center"/>
+      <RouterProvider 
+        router={router} 
+        context={{ 
+          auth: { user, isAuthenticated } 
+        }} 
+      />
+    </ThemeProvider>
+  )
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <App />
   </StrictMode>
 )

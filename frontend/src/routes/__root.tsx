@@ -1,8 +1,17 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
-import { Toaster } from '@/components/ui/sonner'
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import {  Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { createRootRouteWithContext } from '@tanstack/react-router'
+import type { User } from '@/types/user'
+
+
+interface RouterContext {
+  auth: {
+    user : User| null
+    isAuthenticated : boolean
+  }
+}
 
 const RootLayout = () => (
   <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -13,8 +22,7 @@ const RootLayout = () => (
 
     <Footer />
     <TanStackRouterDevtools/>
-    <Toaster richColors position="top-center" />
   </div>
 )
 
-export const Route = createRootRoute({ component: RootLayout })
+export const Route = createRootRouteWithContext<RouterContext>()({ component: RootLayout })

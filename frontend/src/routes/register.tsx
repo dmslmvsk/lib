@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 import {api} from "@/api/axios"
 import { useAuthStore } from '@/store/useAuthStore'
@@ -6,7 +6,18 @@ import { RegisterForm, type RegisterFormData } from '@/components/forms/register
 import { toast } from 'sonner'
 export const Route = createFileRoute('/register')({
   component: Register,
-})
+  beforeLoad: ({context}) => {
+		if(context.auth.isAuthenticated){
+      toast.info("You are already logged in")
+			throw redirect({
+        to: '/',
+        search: {
+    		reason: 'authenticated',
+  },
+      })
+		}
+	}}
+)
 
 function Register() {
   const navigate = useNavigate()
