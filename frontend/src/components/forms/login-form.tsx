@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { useState } from "react"
 import * as z from "zod"
+import { Link } from "@tanstack/react-router"
 import { Mail, Lock, Loader2, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export const loginSchema = z.object({
-  email: z.email({ message: "Please enter a valid email address" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
 })
 
@@ -31,11 +32,10 @@ interface LoginFormProps {
   onSubmit: (data: LoginFormData) => Promise<void>
 }
 
-export function LoginForm({onSubmit} : LoginFormProps) {
-
+export function LoginForm({ onSubmit }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false)
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -46,11 +46,13 @@ export function LoginForm({onSubmit} : LoginFormProps) {
   const isLoading = form.formState.isSubmitting
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
-      <Card className="w-full max-w-95 rounded-sm border-muted shadow-sm animate-in fade-in duration-500">
+    <div className="grow flex items-center justify-center p-4">
+      <Card className="w-full max-w-95 rounded-sm border-border bg-card shadow-md animate-in fade-in duration-500">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-xl font-bold tracking-tight">Login</CardTitle>
-          <CardDescription className="text-md">
+          <CardTitle className="text-xl font-bold tracking-tight text-foreground">
+            Login
+          </CardTitle>
+          <CardDescription className="text-md text-muted-foreground">
             Enter your credentials to access the library
           </CardDescription>
         </CardHeader>
@@ -72,14 +74,14 @@ export function LoginForm({onSubmit} : LoginFormProps) {
                       <Input
                         {...field}
                         id="login-form-email"
-                        className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1"
+                        className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1 bg-background border-border text-foreground"
                         placeholder="name@example.com"
                         disabled={isLoading}
-                        autoComplete="off"
+                        autoComplete="email"
                       />
                     </div>
                     {fieldState.invalid && (
-                      <FieldError className="text-md font-medium text-destructive">
+                      <FieldError className="text-sm font-medium text-destructive">
                         {fieldState.error?.message}
                       </FieldError>
                     )}
@@ -101,27 +103,22 @@ export function LoginForm({onSubmit} : LoginFormProps) {
                         type={showPassword ? "text" : "password"}
                         {...field}
                         id="login-form-password"
-                        className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1"
+                        className="rounded-sm pl-9 h-10 text-md focus-visible:ring-1 bg-background border-border text-foreground"
                         placeholder="••••••••"
                         disabled={isLoading}
-                        autoComplete="off"
+                        autoComplete="current-password"
                       />
                       <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors hover:cursor-pointer duration-300"
-                      tabIndex={-1}
-
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </button>
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors hover:cursor-pointer duration-300"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
                     </div>
                     {fieldState.invalid && (
-                      <FieldError className="text-md font-medium text-destructive">
+                      <FieldError className="text-sm font-medium text-destructive">
                         {fieldState.error?.message}
                       </FieldError>
                     )}
@@ -137,17 +134,17 @@ export function LoginForm({onSubmit} : LoginFormProps) {
           <Button 
             type="submit" 
             form="login-form" 
-            className="w-full h-10 rounded-sm bg-primary text-md font-medium transition-all hover:cursor-pointer duration-300"
+            className="w-40 h-10 rounded-sm bg-primary text-primary-foreground font-medium transition-all hover:cursor-pointer duration-300 shadow-sm hover:opacity-90"
             disabled={isLoading}
           >
             {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign In"}
           </Button>
           
-          <div className="text-center text-md text-muted-foreground">
+          <div className="text-center text-sm text-muted-foreground">
             No account?{" "}
-            <a href="/register" className="text-foreground font-medium hover:underline duration-300">
+            <Link to="/register" className="text-foreground font-medium hover:underline transition-colors duration-300">
               Create one
-            </a>
+            </Link>
           </div>
         </CardFooter>
       </Card>

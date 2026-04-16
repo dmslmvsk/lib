@@ -34,7 +34,7 @@ function Register() {
   
 
   return (
-    <div className='bg-linear-to-br to-zinc-50 from-yellow-300 flex flex-col justify-center'>
+    <div className='grow flex flex-col justify-center'>
       <RegisterForm onSubmit={handleRegisterSubmit}/>
     </div>
   )
