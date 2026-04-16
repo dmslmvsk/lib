@@ -1,8 +1,17 @@
-import { Link } from '@tanstack/react-router'
-import { Library, User, LogIn } from "lucide-react"
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Library, User, LogIn,LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
+import { useAuthStore } from '@/store/useAuthStore'
+import { toast } from 'sonner'
 export function Header() {
+
+  const {user, logout} = useAuthStore();
+  const navigate = useNavigate();
+  const logoutUser = () => {
+    logout();
+    navigate({ to: '/login' });
+    toast.success("Logged out successfully!");
+  }
   return (
     <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
       <div className="w-full flex h-16 items-center justify-between px-6">
@@ -32,24 +41,41 @@ export function Header() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2">
-          
-          <Button 
+          {user?
+          <div className="flex items-center gap-2">
+            <Link to="/profile">
+            <Button 
             variant="default"
             className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
           >
             <User className="h-4 w-4" />
             Profile
           </Button>
+            </Link>
+            
+          <Button 
+            onClick={logoutUser}
+            variant="secondary"
+            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2 hover:bg-accent"
+          >
+            <LogOut  className="h-4 w-4" />
+            Sign Out
+          </Button>
           
+          </div>
+          :
+          <Link to="/login">
           <Button 
             variant="default"
             className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
           >
             <LogIn className='h-4 w-4'/>
             Sign In
-          </Button>
-        </div>
+          </Button> 
+          </Link>
+          
+          }
+          
       </div>
     </header>
   )

@@ -13,7 +13,7 @@ const RootLayout = () => (
 
     <Footer />
     <TanStackRouterDevtools/>
-    <Toaster richColors position="top-right" />
+    <Toaster richColors position="top-center" />
   </div>
 )
 

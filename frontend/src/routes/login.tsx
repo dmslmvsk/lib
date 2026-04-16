@@ -19,7 +19,7 @@ function Login() {
       const {user,token} = response.data
 
       setAuth(user,token)
-      toast.success("Welcome back!")
+      toast.success(`Welcome back, ${user.email}!`)
       navigate({ to: '/' })
     } catch(error){
       if(error instanceof AxiosError){
