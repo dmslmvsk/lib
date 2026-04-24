@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/useAuthStore'
 import { LoginForm, type LoginFormData } from '@/components/forms/login-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 const loginSearchSchema = z.object({
   reason: z.string().optional(),
 })
@@ -49,11 +50,39 @@ function Login() {
       throw error
       }
     }
-  
+    
+
+    const loginAsAdmin = () => {
+    handleLoginSubmit({ 
+      email: "admin@admin.com", 
+      password: "adminadmin"
+    })
+  }
+
+  const loginAsUser = () => {
+    handleLoginSubmit({ 
+      email: "user@user.com", 
+      password: "useruser" 
+    })
+  }
 
   return (
     <div className='grow flex flex-col justify-center'>
       <LoginForm onSubmit={handleLoginSubmit}/>
+      <div className="flex justify-center items-center flex-row gap-2">
+          <Button 
+            className="rounded-sm hover:cursor-pointer" 
+            onClick={loginAsAdmin}
+          >
+            Login as ADMIN
+          </Button>
+          <Button 
+            className="rounded-sm hover:cursor-pointer" 
+            onClick={loginAsUser}
+          >
+            Login as USER
+          </Button>
+        </div>
     </div>
   )
 }

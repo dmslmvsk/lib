@@ -1,4 +1,4 @@
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate, useRouter } from '@tanstack/react-router'
 import { Library, User, LogIn,LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from '@/store/useAuthStore'
@@ -7,10 +7,14 @@ export function Header() {
 
   const {user, logout} = useAuthStore();
   const navigate = useNavigate();
-  const logoutUser = () => {
+  const router = useRouter();
+  const logoutUser = async () => {
     logout();
-    navigate({ to: '/login' });
+    
+    await router.invalidate(); 
+    
     toast.success("Logged out successfully!");
+    navigate({ to: '/login' });
   }
   return (
     <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
@@ -52,7 +56,6 @@ export function Header() {
             Profile
           </Button>
             </Link>
-            
           <Button 
             onClick={logoutUser}
             variant="secondary"
@@ -62,6 +65,19 @@ export function Header() {
             Sign Out
           </Button>
           
+          {user.role === "ADMIN"?
+             <Link to="/admin">
+            <Button 
+            variant="default"
+            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
+          >
+            <User className="h-4 w-4" />
+            Admin
+          </Button>
+            </Link>
+            :
+            <div></div>
+        }
           </div>
           :
           <Link to="/login">

@@ -16,7 +16,7 @@ model User {
   email String @unique
   password String
 
-  Role Role @default(USER)
+  role Role @default(USER)
 
   borrowedBooks Book[]
 
@@ -46,21 +46,27 @@ model Shelf {
 }
 
 model Book {
-  id        String   @id @default(uuid())
-  title     String
-  authorId    String
-  author    Author   @relation(fields: [authorId], references: [id])
+  id          String   @id @default(uuid())
+  title       String
+  description String?  @db.Text
+  rating      Float    @default(0.0)
   
-  genreId   String
-  genre     Genre    @relation(fields: [genreId], references: [id])
+ 
+  authorId    String
+  author      Author   @relation(fields: [authorId], references: [id])
+  
+  genreId     String
+  genre       Genre    @relation(fields: [genreId], references: [id])
 
-  shelfId   String
-  shelf     Shelf    @relation(fields: [shelfId], references: [id], onDelete: Cascade)
+  shelfId     String
+  shelf       Shelf    @relation(fields: [shelfId], references: [id], onDelete: Cascade)
 
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+ 
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Genre {
