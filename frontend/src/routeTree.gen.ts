@@ -12,11 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminBooksRouteImport } from './routes/_admin.books'
-import { Route as AdminAdminRouteImport } from './routes/_admin.admin'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminGenresRouteImport } from './routes/admin.genres'
+import { Route as AdminBooksRouteImport } from './routes/admin.books'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -33,13 +34,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/_admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -47,25 +49,32 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGenresRoute = AdminGenresRouteImport.update({
+  id: '/genres',
+  path: '/genres',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminBooksRoute = AdminBooksRouteImport.update({
   id: '/books',
   path: '/books',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminRoute = AdminAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/admin': typeof AdminAdminRoute
-  '/books': typeof AdminBooksRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/genres': typeof AdminGenresRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -73,48 +82,61 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/admin': typeof AdminAdminRoute
-  '/books': typeof AdminBooksRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/genres': typeof AdminGenresRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_admin': typeof AdminRouteWithChildren
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/_admin/admin': typeof AdminAdminRoute
-  '/_admin/books': typeof AdminBooksRoute
+  '/admin/books': typeof AdminBooksRoute
+  '/admin/genres': typeof AdminGenresRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/login'
     | '/profile'
     | '/register'
-    | '/admin'
-    | '/books'
+    | '/admin/books'
+    | '/admin/genres'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/profile' | '/register' | '/admin' | '/books'
-  id:
-    | '__root__'
+  to:
     | '/'
-    | '/_admin'
     | '/about'
     | '/login'
     | '/profile'
     | '/register'
-    | '/_admin/admin'
-    | '/_admin/books'
+    | '/admin/books'
+    | '/admin/genres'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/login'
+    | '/profile'
+    | '/register'
+    | '/admin/books'
+    | '/admin/genres'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
@@ -143,18 +165,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_admin': {
-      id: '/_admin'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -164,39 +186,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_admin/books': {
-      id: '/_admin/books'
-      path: '/books'
-      fullPath: '/books'
-      preLoaderRoute: typeof AdminBooksRouteImport
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_admin/admin': {
-      id: '/_admin/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminAdminRouteImport
+    '/admin/genres': {
+      id: '/admin/genres'
+      path: '/genres'
+      fullPath: '/admin/genres'
+      preLoaderRoute: typeof AdminGenresRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/books': {
+      id: '/admin/books'
+      path: '/books'
+      fullPath: '/admin/books'
+      preLoaderRoute: typeof AdminBooksRouteImport
       parentRoute: typeof AdminRoute
     }
   }
 }
 
 interface AdminRouteChildren {
-  AdminAdminRoute: typeof AdminAdminRoute
   AdminBooksRoute: typeof AdminBooksRoute
+  AdminGenresRoute: typeof AdminGenresRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminAdminRoute: AdminAdminRoute,
   AdminBooksRoute: AdminBooksRoute,
+  AdminGenresRoute: AdminGenresRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,

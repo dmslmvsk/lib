@@ -19,10 +19,15 @@ app.get("/health",(req:Request, res: Response) => {
 	res.status(200).json({status: "ok", message:"Library API is working"})
 })
 
-app.use("/authors",authorRoutes);
-app.use("/libraries",libraryRoutes);
-app.use("/genres",genreRoutes);
-app.use("/books",bookRoutes);
-app.use("/shelves",shelfRoutes);
-app.use("/auth",authRoutes)
+const apiRouter = express.Router();
+
+apiRouter.use("/authors", authorRoutes);
+apiRouter.use("/libraries", libraryRoutes);
+apiRouter.use("/genres", genreRoutes);
+apiRouter.use("/books", bookRoutes);
+apiRouter.use("/shelves", shelfRoutes);
+apiRouter.use("/auth", authRoutes);
+
+app.use("/api", apiRouter);
+
 export default app

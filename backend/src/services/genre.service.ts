@@ -13,6 +13,21 @@ export class GenreService {
 		})
 	}
 
+	static async deleteGenre(id:string) {
+		return await prisma.genre.delete({
+			where:{
+				id:id
+			}
+		})
+	}
+
+	static async updateGenre(id: string, name: string) {
+    return await prisma.genre.update({
+      where: { id: id },
+      data: { name: name }
+    });
+  }
+
 	static async createGenre(name:string) {
 		const genre = await prisma.genre.findUnique({
 			where:{
