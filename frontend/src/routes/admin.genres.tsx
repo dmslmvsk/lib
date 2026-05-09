@@ -1,60 +1,126 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Plus, Trash2, Edit2 } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { genreService } from '../api/services/genre.service'
+import { useState } from 'react'
+import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
+import { AdminModal, type FieldConfig } from '@/components/admin-modal'
 
 export const Route = createFileRoute('/admin/genres')({
   component: GenresPage,
 })
 
-// Временные данные для верстки
-const mockGenres = [
-  { id: '1', name: 'Science Fiction' },
-  { id: '2', name: 'Fantasy' },
-  { id: '3', name: 'Biography' },
-]
-
 function GenresPage() {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Genres</h1>
-          <p className="text-zinc-400 text-sm">Manage book categories</p>
-        </div>
-        <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl transition-colors">
-          <Plus size={18} />
-          Add Genre
-        </button>
-      </div>
+  const queryClient = useQueryClient()
+  const [searchQuery, setSearchQuery] = useState('')
+  
+  // --- Состояния модалки ---
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  // Если null -> режим добавления. Если объект -> режим редактирования
+  const [editingItem, setEditingItem] = useState<{ id: string; name: string } | null>(null)
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-800/30">
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-300">Name</th>
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-300">ID</th>
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-300 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-zinc-800">
-            {mockGenres.map((genre) => (
-              <tr key={genre.id} className="hover:bg-zinc-800/20 transition-colors">
-                <td className="px-6 py-4 text-zinc-200 font-medium">{genre.name}</td>
-                <td className="px-6 py-4 text-zinc-500 text-xs font-mono">{genre.id}</td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex justify-end gap-2">
-                    <button className="p-2 hover:bg-zinc-700 rounded-lg text-zinc-400 hover:text-white transition-colors">
-                      <Edit2 size={16} />
-                    </button>
-                    <button className="p-2 hover:bg-red-900/30 rounded-lg text-zinc-400 hover:text-red-400 transition-colors">
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+  // --- API Запросы ---
+  const { data: genres, isLoading, isError } = useQuery({
+    queryKey: ['genres'],
+    queryFn: genreService.getAll,
+    retry: false
+  })
+
+  // Мутация на Создание
+  const createMutation = useMutation({
+    mutationFn: (name: string) => genreService.create({ name }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      closeModal()
+    },
+    onError: (err: any) => alert(err.response?.data?.error || 'Create error')
+  })
+
+  // Мутация на Обновление
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => genreService.update({ id, data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      closeModal()
+    },
+    onError: (err: any) => alert(err.response?.data?.error || 'Update error')
+  })
+
+  // Мутация на Удаление
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => genreService.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['genres'] })
+  })
+
+  // --- Обработчики модалки ---
+  const openCreateModal = () => {
+    setEditingItem(null)
+    setIsModalOpen(true)
+  }
+
+  const openEditModal = (genre: any) => {
+    setEditingItem(genre)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setEditingItem(null)
+  }
+
+  const handleSave = (formData: Record<string, any>) => {
+    if (editingItem) {
+      // Режим обновления
+      updateMutation.mutate({ id: editingItem.id, data: { name: formData.name } })
+    } else {
+      // Режим создания
+      createMutation.mutate(formData.name)
+    }
+  }
+
+  // --- Настройки для шаблонов ---
+  const filteredGenres = genres?.filter((genre) =>
+    genre.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const columns: TableColumn<any>[] = [
+    { header: 'Name', render: (genre) => genre.name },
+    { header: 'ID', render: (genre) => <span className="text-zinc-500 font-mono text-xs">{genre.id}</span> }
+  ]
+
+  const modalFields: FieldConfig[] = [
+    { name: 'name', label: 'Genre Name', placeholder: 'e.g. Science Fiction', required: true }
+  ]
+
+  if (isError) return <div className="text-red-500 p-4">Error loading genres.</div>
+
+  return (
+    <>
+      <AdminPageTemplate
+        title="Genres"
+        description="Manage library categories"
+        data={filteredGenres}
+        columns={columns}
+        isLoading={isLoading}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onAdd={openCreateModal}
+        onEdit={openEditModal}
+        onDelete={(genre) => {
+          if (confirm(`Delete "${genre.name}"?`)) deleteMutation.mutate(genre.id)
+        }}
+      />
+
+      {/* Универсальная модалка */}
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={editingItem ? 'Edit Genre' : 'Add New Genre'}
+        description={editingItem ? 'Update the details of the genre.' : 'Fill in the form to create a new genre.'}
+        fields={modalFields}
+        initialData={editingItem}
+        onSave={handleSave}
+        isLoading={createMutation.isPending || updateMutation.isPending}
+      />
+    </>
   )
 }
