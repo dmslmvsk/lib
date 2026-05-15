@@ -1,50 +1,48 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { genreService } from '../api/services/genre.service'
+import { authorService } from '../api/services/author.service'
 import { useState } from 'react'
 import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
 import { AdminModal, type FieldConfig } from '@/components/admin-modal'
-import type { Genre } from '@/types/book'
+import type { Author } from '@/types/book'
 
-export const Route = createFileRoute('/admin/genres')({
-  component: GenresPage,
+export const Route = createFileRoute('/admin/authors')({
+  component: AuthorsPage,
 })
 
-function GenresPage() {
+function AuthorsPage() {
   const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState('')
-  
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const [editingItem, setEditingItem] = useState<{ id: string; name: string } | null>(null)
 
-  const { data: genres, isLoading, isError } = useQuery<Genre[]>({
-    queryKey: ['genres'],
-    queryFn: genreService.getAll,
+  const { data: authors, isLoading, isError } = useQuery<Author[]>({
+    queryKey: ['authors'],
+    queryFn: authorService.getAll,
     retry: false
   })
 
   const createMutation = useMutation({
-    mutationFn: (name: string) => genreService.create({ name }),
+    mutationFn: (name: string) => authorService.create({ name }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      queryClient.invalidateQueries({ queryKey: ['authors'] })
       closeModal()
     },
     onError: (err: any) => alert(err.response?.data?.error || 'Create error')
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => genreService.update({ id, data }),
+    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => authorService.update({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      queryClient.invalidateQueries({ queryKey: ['authors'] })
       closeModal()
     },
     onError: (err: any) => alert(err.response?.data?.error || 'Update error')
   })
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => genreService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['genres'] })
+    mutationFn: (id: string) => authorService.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['authors'] })
   })
 
   const openCreateModal = () => {
@@ -52,8 +50,8 @@ function GenresPage() {
     setIsModalOpen(true)
   }
 
-  const openEditModal = (genre: any) => {
-    setEditingItem(genre)
+  const openEditModal = (author: any) => {
+    setEditingItem(author)
     setIsModalOpen(true)
   }
 
@@ -70,43 +68,43 @@ function GenresPage() {
     }
   }
 
-  const filteredGenres = genres?.filter((genre) =>
-    genre.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredAuthors = authors?.filter((author) =>
+    author.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const columns: TableColumn<any>[] = [
-    { header: 'Name', render: (genre) => genre.name },
-    { header: 'ID', render: (genre) => <span className="text-zinc-500 font-mono text-xs">{genre.id}</span> }
+    { header: 'Author Name', render: (author) => author.name },
+    { header: 'ID', render: (author) => <span className="text-zinc-500 font-mono text-xs">{author.id}</span> }
   ]
 
   const modalFields: FieldConfig[] = [
-    { name: 'name', label: 'Genre Name', placeholder: 'e.g. Science Fiction', required: true }
+    { name: 'name', label: 'Full Name', placeholder: 'e.g. Stephen King', required: true }
   ]
 
-  if (isError) return <div className="text-red-500 p-4">Error loading genres.</div>
+  if (isError) return <div className="text-red-500 p-4">Error loading authors.</div>
 
   return (
     <>
       <AdminPageTemplate
-        title="Genres"
-        description="Manage library categories"
-        data={filteredGenres}
+        title="Authors"
+        description="Manage book authors"
+        data={filteredAuthors}
         columns={columns}
         isLoading={isLoading}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onAdd={openCreateModal}
         onEdit={openEditModal}
-        onDelete={(genre) => {
-          if (confirm(`Delete "${genre.name}"?`)) deleteMutation.mutate(genre.id)
+        onDelete={(author) => {
+          if (confirm(`Delete "${author.name}"?`)) deleteMutation.mutate(author.id)
         }}
       />
 
       <AdminModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={editingItem ? 'Edit Genre' : 'Add New Genre'}
-        description={editingItem ? 'Update the details of the genre.' : 'Fill in the form to create a new genre.'}
+        title={editingItem ? 'Edit Author' : 'Add New Author'}
+        description={editingItem ? 'Update author info.' : 'Add a new author to the library.'}
         fields={modalFields}
         initialData={editingItem}
         onSave={handleSave}

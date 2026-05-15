@@ -14,6 +14,25 @@ export class AuthorService {
 		})
 	}
 
+	static async deleteAuthor(id:string) {
+		return await prisma.author.delete({
+			where: {
+				id:id
+			}
+		})
+	}
+
+	static async updateAuthor(id:string, name:string) {
+		return await prisma.author.update({
+			where: {
+				id:id,
+			},
+			data: {
+				name:name
+			}
+		})
+	}
+
 	static async createAuthor(name:string) {
 		const author = await prisma.author.findUnique({
 				where:{

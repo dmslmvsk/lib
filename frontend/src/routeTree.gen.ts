@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminGenresRouteImport } from './routes/admin.genres'
 import { Route as AdminBooksRouteImport } from './routes/admin.books'
+import { Route as AdminAuthorsRouteImport } from './routes/admin.authors'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -64,6 +65,11 @@ const AdminBooksRoute = AdminBooksRouteImport.update({
   path: '/books',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAuthorsRoute = AdminAuthorsRouteImport.update({
+  id: '/authors',
+  path: '/authors',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/admin/authors': typeof AdminAuthorsRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/genres': typeof AdminGenresRoute
   '/admin/': typeof AdminIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/admin/authors': typeof AdminAuthorsRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/genres': typeof AdminGenresRoute
   '/admin': typeof AdminIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/admin/authors': typeof AdminAuthorsRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/genres': typeof AdminGenresRoute
   '/admin/': typeof AdminIndexRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/admin/authors'
     | '/admin/books'
     | '/admin/genres'
     | '/admin/'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/admin/authors'
     | '/admin/books'
     | '/admin/genres'
     | '/admin'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/admin/authors'
     | '/admin/books'
     | '/admin/genres'
     | '/admin/'
@@ -207,16 +219,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBooksRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/authors': {
+      id: '/admin/authors'
+      path: '/authors'
+      fullPath: '/admin/authors'
+      preLoaderRoute: typeof AdminAuthorsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAuthorsRoute: typeof AdminAuthorsRoute
   AdminBooksRoute: typeof AdminBooksRoute
   AdminGenresRoute: typeof AdminGenresRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuthorsRoute: AdminAuthorsRoute,
   AdminBooksRoute: AdminBooksRoute,
   AdminGenresRoute: AdminGenresRoute,
   AdminIndexRoute: AdminIndexRoute,
