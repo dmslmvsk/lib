@@ -47,7 +47,7 @@ export function AdminPageTemplate<T extends { id: string }>({
 }: AdminPageTemplateProps<T>) {
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 rounded-sm">
 
       <div>
         <h1 className="text-2xl font-bold text-white">{title}</h1>
