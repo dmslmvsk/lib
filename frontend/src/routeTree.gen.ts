@@ -16,6 +16,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminShelvesRouteImport } from './routes/admin.shelves'
 import { Route as AdminLibrariesRouteImport } from './routes/admin.libraries'
 import { Route as AdminGenresRouteImport } from './routes/admin.genres'
@@ -57,6 +58,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminShelvesRoute = AdminShelvesRouteImport.update({
   id: '/shelves',
   path: '/shelves',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/admin/genres': typeof AdminGenresRoute
   '/admin/libraries': typeof AdminLibrariesRoute
   '/admin/shelves': typeof AdminShelvesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/admin/genres': typeof AdminGenresRoute
   '/admin/libraries': typeof AdminLibrariesRoute
   '/admin/shelves': typeof AdminShelvesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/admin/genres': typeof AdminGenresRoute
   '/admin/libraries': typeof AdminLibrariesRoute
   '/admin/shelves': typeof AdminShelvesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/admin/genres'
     | '/admin/libraries'
     | '/admin/shelves'
+    | '/admin/users'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/admin/genres'
     | '/admin/libraries'
     | '/admin/shelves'
+    | '/admin/users'
     | '/admin'
   id:
     | '__root__'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/admin/genres'
     | '/admin/libraries'
     | '/admin/shelves'
+    | '/admin/users'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -229,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/shelves': {
       id: '/admin/shelves'
       path: '/shelves'
@@ -273,6 +292,7 @@ interface AdminRouteChildren {
   AdminGenresRoute: typeof AdminGenresRoute
   AdminLibrariesRoute: typeof AdminLibrariesRoute
   AdminShelvesRoute: typeof AdminShelvesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -282,6 +302,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminGenresRoute: AdminGenresRoute,
   AdminLibrariesRoute: AdminLibrariesRoute,
   AdminShelvesRoute: AdminShelvesRoute,
+  AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 

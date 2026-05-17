@@ -6,7 +6,6 @@ import { adminMiddleware } from "../middlewares/admin.middleware.js";
 const router = Router();
 
 router.get("/",getLibraries)
-router.post("/",authMiddleware,adminMiddleware,createLibrary)
 router.post("/",authMiddleware,adminMiddleware,createLibrary);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteLibrary);
 router.put("/:id", authMiddleware, adminMiddleware, updateLibrary);

@@ -1,11 +1,12 @@
-import { createFileRoute, useNavigate,redirect } from '@tanstack/react-router'
+import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
-import {api} from "@/api/axios"
+import { authService } from '@/api/services/auth.service'
 import { useAuthStore } from '@/store/useAuthStore'
 import { LoginForm, type LoginFormData } from '@/components/forms/login-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
+
 const loginSearchSchema = z.object({
   reason: z.string().optional(),
 })
@@ -14,9 +15,7 @@ export const Route = createFileRoute('/login')({
   validateSearch: loginSearchSchema,
   beforeLoad: ({ context }) => {
     if (context.auth.isAuthenticated) {
-      throw redirect({ to: '/', search: {
-    		reason: 'authenticated',
-  }, })
+      throw redirect({ to: '/', search: { reason: 'authenticated' } })
     }
   },
   onEnter: ({ search }) => {
@@ -29,60 +28,49 @@ export const Route = createFileRoute('/login')({
 
 function Login() {
   const navigate = useNavigate()
-  const {setAuth} = useAuthStore()
+  const { setAuth } = useAuthStore()
   
   const handleLoginSubmit = async (data: LoginFormData) => {
-    try{
-      const response = await api.post("/auth/login",data)
-
-      const {user,token} = response.data
-
-      setAuth(user,token)
+    try {
+      const { user, token } = await authService.login(data)
+      
+      setAuth(user, token)
       toast.success(`Welcome back, ${user.email}!`)
       navigate({ to: '/' })
-    } catch(error){
-      if(error instanceof AxiosError){
+    } catch(error) {
+      if (error instanceof AxiosError) {
         const message = error.response?.data?.error || "Login failed"
         toast.error(message)
       } else {
         toast.error("An unexpected error occurred")
       }
       throw error
-      }
     }
-    
-
-    const loginAsAdmin = () => {
-    handleLoginSubmit({ 
-      email: "admin@admin.com", 
-      password: "adminadmin"
-    })
   }
 
-  const loginAsUser = () => {
-    handleLoginSubmit({ 
-      email: "user@user.com", 
-      password: "useruser" 
-    })
-  }
+  const loginAsAdmin = () => handleLoginSubmit({ email: "admin@admin.com", password: "adminadmin" })
+  const loginAsUser = () => handleLoginSubmit({ email: "user@user.com", password: "useruser" })
 
   return (
-    <div className='grow flex flex-col justify-center'>
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-4">
       <LoginForm onSubmit={handleLoginSubmit}/>
-      <div className="flex justify-center items-center flex-row gap-2">
-          <Button 
-            className="rounded-sm hover:cursor-pointer" 
-            onClick={loginAsAdmin}
-          >
-            Login as ADMIN
-          </Button>
-          <Button 
-            className="rounded-sm hover:cursor-pointer" 
-            onClick={loginAsUser}
-          >
-            Login as USER
-          </Button>
-        </div>
+      
+      <div className="mt-8 flex gap-4">
+        <Button 
+          variant="outline"
+          className="rounded-sm border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer" 
+          onClick={loginAsAdmin}
+        >
+          Login as ADMIN
+        </Button>
+        <Button 
+          variant="outline"
+          className="rounded-sm border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white cursor-pointer" 
+          onClick={loginAsUser}
+        >
+          Login as USER
+        </Button>
+      </div>
     </div>
   )
 }

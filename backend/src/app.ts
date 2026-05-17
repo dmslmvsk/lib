@@ -7,7 +7,8 @@ import genreRoutes from "./routes/genre.routes.js"
 import bookRoutes from "./routes/book.routes.js"
 import shelfRoutes from "./routes/shelf.routes.js"
 import authRoutes from "./routes/auth.routes.js"
-
+import { userRoutes } from "./routes/user.routes.js";
+import statsRoutes from "./routes/stats.routes.js";
 const app = express();
 
 app.use(express.json());
@@ -27,7 +28,8 @@ apiRouter.use("/genres", genreRoutes);
 apiRouter.use("/books", bookRoutes);
 apiRouter.use("/shelves", shelfRoutes);
 apiRouter.use("/auth", authRoutes);
-
+apiRouter.use("/users",userRoutes);
+apiRouter.use("/stats",statsRoutes)
 app.use("/api", apiRouter);
 
 export default app

@@ -27,7 +27,7 @@ interface AdminPageTemplateProps<T> {
   onSearchChange: (value: string) => void;
   searchPlaceholder?: string;
   
-  onAdd: () => void;
+  onAdd?: () => void;
   onEdit: (item: T) => void;
   onDelete: (item: T) => void;
 }
@@ -66,13 +66,14 @@ export function AdminPageTemplate<T extends { id: string }>({
           />
         </div>
 
-        <Button 
-          onClick={onAdd}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white w-full sm:w-auto hover:cursor-pointer rounded-sm"
-        >
-          <Plus className="mr-2 h-4 w-4 hover:cursor-pointer" />
-          Add New
-        </Button>
+        {onAdd && (
+          <Button 
+            onClick={onAdd}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm h-10 px-4 cursor-pointer"
+          >
+            <Plus className="mr-2 h-4 w-4" /> Add New
+          </Button>
+        )}
       </div>
 
 
