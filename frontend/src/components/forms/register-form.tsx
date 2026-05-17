@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export const registerSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  email: z.email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
 })
 
@@ -33,7 +33,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
   const isLoading = form.formState.isSubmitting
 
   return (
-    <div className="w-full max-w-[400px] mx-auto rounded-sm border border-zinc-800 bg-zinc-950 p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+    <div className="w-full max-w-100 mx-auto rounded-sm border border-zinc-800 bg-zinc-950 p-6 sm:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
       <div className="flex flex-col space-y-2 text-center mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-white">
           Create an account
@@ -57,7 +57,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                 <Input
                   {...field}
                   id="email"
-                  className="rounded-sm pl-10 h-10 bg-zinc-900 border-zinc-800 text-zinc-100 focus-visible:ring-indigo-500 placeholder:text-zinc-600 w-full"
+                  className="rounded-sm pl-10 h-11 bg-zinc-900 border-zinc-800 text-zinc-100 focus-visible:ring-indigo-500 placeholder:text-zinc-600 w-full"
                   placeholder="name@example.com"
                   disabled={isLoading}
                   autoComplete="email"
@@ -86,7 +86,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                   type={showPassword ? "text" : "password"}
                   {...field}
                   id="password"
-                  className="rounded-sm pl-10 pr-10 h-10 bg-zinc-900 border-zinc-800 text-zinc-100 focus-visible:ring-indigo-500 placeholder:text-zinc-600 w-full"
+                  className="rounded-sm pl-10 pr-10 h-11 bg-zinc-900 border-zinc-800 text-zinc-100 focus-visible:ring-indigo-500 placeholder:text-zinc-600 w-full"
                   placeholder="••••••••"
                   disabled={isLoading}
                   autoComplete="new-password"
@@ -94,7 +94,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
                   tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -112,7 +112,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         <Button 
           type="submit" 
           form="register-form" 
-          className="w-full h-10 mt-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full h-11 mt-2 rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={isLoading}
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -122,7 +122,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
 
       <div className="mt-6 text-center text-sm text-zinc-500">
         Already have an account?{" "}
-        <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+        <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors p-2 -m-2">
           Sign in
         </Link>
       </div>

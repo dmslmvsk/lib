@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { bookService } from '@/api/services/book.service'
 import { api } from '@/api/axios'
 import { BookCard } from '@/components/book-card'
-import { Search, Loader2} from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { z } from 'zod'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 const indexSearchSchema = z.object({
+  reason: z.string().optional(),
   search: z.string().optional(),
   genreId: z.string().optional(),
 })
@@ -41,15 +41,14 @@ function Index() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-zinc-200">
-      
+    <div className="min-h-dvh bg-[#0a0a0a] text-zinc-200">      
       <div className="border-b border-zinc-900 bg-zinc-950/50">
-        <div className="container mx-auto px-6 py-12">
+        <div className="container mx-auto px-4 md:px-6 py-8 md:py-12">
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
               Archive <span className="text-indigo-500">Collection</span>
             </h1>
-            <p className="text-zinc-500 text-sm max-w-lg">
+            <p className="text-zinc-500 text-xs md:text-sm max-w-lg">
               Manage and explore our digital repository of books and resources.
             </p>
           </div>
@@ -57,8 +56,8 @@ function Index() {
       </div>
 
       <div className="sticky top-16 z-40 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-zinc-900">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex flex-col lg:flex-row gap-4 items-center">
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
+          <div className="flex flex-col lg:flex-row gap-3 md:gap-4 items-start lg:items-center">
             
             <div className="relative w-full lg:max-w-xs">
               <Input 
@@ -71,8 +70,7 @@ function Index() {
             </div>
 
             <div className="h-4 w-px bg-zinc-800 hidden lg:block" />
-
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full touch-pan-x pb-1">
               <button
                 onClick={() => updateGenre(undefined)}
                 className={`px-3 py-1.5 rounded-sm hover:cursor-pointer text-xs font-medium transition-all whitespace-nowrap border ${
@@ -101,21 +99,22 @@ function Index() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-10">
+      {/* ИЗМЕНЕНИЕ: px-4 вместо px-6 для мобилок, чтобы карточки были крупнее */}
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-10">
         {isLoading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {books?.map((book: any) => (
                 <BookCard key={book.id} book={book} />
               ))}
             </div>
 
             {books?.length === 0 && (
-              <div className="text-center py-20 border border-dashed border-zinc-900 rounded-sm">
+              <div className="text-center py-20 border border-dashed border-zinc-900 rounded-sm mx-2">
                 <p className="text-zinc-500 text-sm">No records found.</p>
                 <button 
                   onClick={() => navigate({ search: {} })}

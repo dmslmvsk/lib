@@ -27,7 +27,7 @@ export type FieldConfig = {
   required?: boolean;
   disabled?: boolean;
   options?: { label: string; value: string }[];
-  fullWidth?: boolean; // Добавили настройку для полей, которые должны занимать всю ширину
+  fullWidth?: boolean;
 }
 
 interface AdminModalProps {
@@ -94,25 +94,25 @@ export function AdminModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-150 bg-zinc-950 border-zinc-800 text-zinc-200 rounded-sm sm:rounded-sm p-8">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <DialogContent className="w-[95vw] max-w-2xl bg-zinc-950 border-zinc-800 text-zinc-200 rounded-sm p-5 md:p-8 max-h-[90vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5 md:gap-6">
           
-          <DialogHeader className="mb-2">
+          <DialogHeader className="mb-1 md:mb-2 text-left">
             <DialogTitle className="text-xl font-semibold text-white tracking-tight">{title}</DialogTitle>
             {description && (
-              <DialogDescription className="text-sm text-zinc-400 mt-1">
+              <DialogDescription className="text-xs md:text-sm text-zinc-400 mt-1">
                 {description}
               </DialogDescription>
             )}
           </DialogHeader>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-y-5">
             {fields.map((field) => (
               <div 
                 key={field.name} 
-                className={`flex flex-col gap-2.5 ${field.fullWidth ? 'sm:col-span-2' : ''}`}
+                className={`flex flex-col gap-2 ${field.fullWidth ? 'sm:col-span-2' : ''}`}
               >
-                <Label htmlFor={field.name} className="text-sm font-medium text-zinc-400">
+                <Label htmlFor={field.name} className="text-xs md:text-sm font-medium text-zinc-400">
                   {field.label}
                 </Label>
 
@@ -122,10 +122,10 @@ export function AdminModal({
                     onValueChange={(value) => handleChange(field.name, value)}
                     disabled={field.disabled}
                   >
-                    <SelectTrigger className="w-full bg-zinc-900 border-zinc-800 text-zinc-200 focus:ring-indigo-500 rounded-sm h-10 disabled:opacity-50">
+                    <SelectTrigger className="w-full bg-zinc-900 border-zinc-800 text-zinc-200 focus:ring-indigo-500 rounded-sm h-10 md:h-11 disabled:opacity-50">
                       <SelectValue placeholder={field.placeholder || "Select an option"} />
                     </SelectTrigger>
-                    <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-200 rounded-sm">
+                    <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-200 rounded-sm max-h-50">
                       {field.options?.map((opt) => (
                         <SelectItem 
                           key={opt.value} 
@@ -146,28 +146,27 @@ export function AdminModal({
                     disabled={field.disabled}
                     value={formData[field.name] || ''}
                     onChange={(e) => handleChange(field.name, e.target.value)}
-                    // Убрал w-1/2, добавил h-10 для одной высоты с селектом
-                    className="w-full bg-zinc-900 border-zinc-800 focus-visible:ring-indigo-500 rounded-sm h-10 disabled:opacity-50 text-zinc-100 placeholder:text-zinc-600"
+                    className="w-full bg-zinc-900 border-zinc-800 focus-visible:ring-indigo-500 rounded-sm h-10 md:h-11 disabled:opacity-50 text-zinc-100 placeholder:text-zinc-600"
                   />
                 )}
               </div>
             ))}
           </div>
 
-          <DialogFooter className="pt-4 mt-2 border-t border-zinc-800/50">
+          <DialogFooter className="pt-4 mt-2 border-t border-zinc-800/50 flex flex-col-reverse sm:flex-row gap-3 sm:gap-2">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={isLoading}
-              className="border-zinc-700 bg-transparent hover:bg-zinc-800 hover:text-white rounded-sm hover:cursor-pointer"
+              className="w-full sm:w-auto border-zinc-700 bg-transparent hover:bg-zinc-800 hover:text-white rounded-sm hover:cursor-pointer"
             >
               Cancel
             </Button>
             <Button 
               type="submit" 
               disabled={isLoading || !isFormValid}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+              className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save Changes

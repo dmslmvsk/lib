@@ -47,58 +47,56 @@ export function AdminPageTemplate<T extends { id: string }>({
 }: AdminPageTemplateProps<T>) {
 
   return (
-    <div className="space-y-6 rounded-sm">
+    <div className="space-y-4 md:space-y-6 rounded-sm">
 
       <div>
-        <h1 className="text-2xl font-bold text-white">{title}</h1>
-        <p className="text-zinc-400 text-sm">{description}</p>
+        <h1 className="text-xl md:text-2xl font-bold text-white">{title}</h1>
+        <p className="text-zinc-400 text-xs md:text-sm">{description}</p>
       </div>
 
-
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-zinc-900/50 p-4 rounded-xl border border-zinc-800">
+      <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-between items-start sm:items-center bg-zinc-900/50 p-3 md:p-4 rounded-sm border border-zinc-800">
         <div className="relative w-full sm:w-96">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 h-4 w-4" />
           <Input
             placeholder={searchPlaceholder}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-9 bg-zinc-950 border-zinc-800 text-zinc-200 focus-visible:ring-indigo-500 rounded-sm"
+            className="pl-9 bg-zinc-950 border-zinc-800 text-zinc-200 focus-visible:ring-indigo-500 rounded-sm w-full"
           />
         </div>
 
         {onAdd && (
           <Button 
             onClick={onAdd}
-            className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm h-10 px-4 cursor-pointer"
+            className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white rounded-sm h-10 px-4 cursor-pointer"
           >
             <Plus className="mr-2 h-4 w-4" /> Add New
           </Button>
         )}
       </div>
 
-
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
+      <div className="rounded-sm border border-zinc-800 bg-zinc-900 overflow-x-auto no-scrollbar">
         {isLoading ? (
           <div className="flex justify-center p-10 text-zinc-500">
             <Loader2 className="animate-spin h-6 w-6" />
           </div>
         ) : (
-          <Table>
+          <Table className="min-w-150 md:min-w-full">
             <TableHeader className="bg-zinc-800/30">
               <TableRow className="border-zinc-800 hover:bg-transparent">
                 {columns.map((col, index) => (
-                  <TableHead key={index} className="text-zinc-300 font-semibold">
+                  <TableHead key={index} className="text-zinc-300 font-semibold whitespace-nowrap">
                     {col.header}
                   </TableHead>
                 ))}
-                <TableHead className="text-zinc-300 font-semibold text-right">Actions</TableHead>
+                <TableHead className="text-zinc-300 font-semibold text-right whitespace-nowrap">Actions</TableHead>
               </TableRow>
             </TableHeader>
             
             <TableBody>
               {data?.length === 0 ? (
                 <TableRow className="border-zinc-800 hover:bg-transparent">
-                  <TableCell colSpan={columns.length + 1} className="h-24 text-center text-zinc-500">
+                  <TableCell colSpan={columns.length + 1} className="h-24 text-center text-zinc-500 text-sm">
                     No results found.
                   </TableCell>
                 </TableRow>
@@ -109,12 +107,12 @@ export function AdminPageTemplate<T extends { id: string }>({
                     className="border-zinc-800 hover:bg-zinc-800/20 transition-colors"
                   >
                     {columns.map((col, index) => (
-                      <TableCell key={index} className="text-zinc-200 font-medium">
+                      <TableCell key={index} className="text-zinc-200 font-medium py-3">
                         {col.render(item)}
                       </TableCell>
                     ))}
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
+                    <TableCell className="text-right py-3">
+                      <div className="flex justify-end gap-1 md:gap-2">
                         <Button 
                           variant="ghost" 
                           size="icon"

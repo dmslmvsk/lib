@@ -42,24 +42,24 @@ function DashboardPage() {
   )
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-zinc-200 p-6 md:p-12">
-      <div className="container mx-auto max-w-5xl space-y-10">
+    <div className="min-h-dvh bg-[#0a0a0a] text-zinc-200 p-4 md:p-12">
+      <div className="container mx-auto max-w-5xl space-y-8 md:space-y-10">
         
-        <header className="border-b border-zinc-900 pb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-white">User Dashboard</h1>
-          <p className="text-zinc-500 text-sm mt-1">Manage your profile and active readings.</p>
+        <header className="border-b border-zinc-900 pb-6 md:pb-8">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">User Dashboard</h1>
+          <p className="text-zinc-500 text-xs md:text-sm mt-1">Manage your profile and active readings.</p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
           
           <div className="lg:col-span-4">
-            <div className="p-6 bg-zinc-950 border border-zinc-900 rounded-sm space-y-6">
+            <div className="p-5 md:p-6 bg-zinc-950 border border-zinc-900 rounded-sm space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-indigo-600/10 rounded-sm">
                     <User className="h-5 w-5 text-indigo-500" />
                   </div>
-                  <div className="space-y-0.5">
+                  <div className="space-y-0.5 overflow-hidden">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Email Address</p>
                     <p className="text-sm font-medium text-zinc-200 truncate">{profile.email}</p>
                   </div>
@@ -106,8 +106,8 @@ function DashboardPage() {
             </h3>
 
             {profile.borrowedBooks.length === 0 ? (
-              <div className="py-16 border border-dashed border-zinc-900 rounded-sm text-center bg-zinc-950/30">
-                <p className="text-zinc-500 text-sm">You don't have any borrowed books.</p>
+              <div className="py-12 md:py-16 border border-dashed border-zinc-900 rounded-sm text-center bg-zinc-950/30">
+                <p className="text-zinc-500 text-xs md:text-sm">You don't have any borrowed books.</p>
                 <Link to="/" className="text-indigo-500 text-xs font-semibold hover:underline mt-3 inline-block">
                   Browse Catalog
                 </Link>
@@ -117,10 +117,10 @@ function DashboardPage() {
                 {profile.borrowedBooks.map((book: any) => (
                   <div 
                     key={book.id} 
-                    className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-sm flex items-center justify-between hover:border-zinc-800 transition-colors"
+                    className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-zinc-800 transition-colors"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-semibold text-zinc-100">{book.title}</h4>
+                      <h4 className="font-semibold text-zinc-100 text-sm md:text-base leading-tight">{book.title}</h4>
                       <p className="text-xs text-zinc-500">
                         {book.author.name} • {book.shelf.library.name}
                       </p>
@@ -130,7 +130,8 @@ function DashboardPage() {
                       disabled={returnMutation.isPending}
                       variant="outline"
                       size="sm"
-                      className="h-9 px-4 text-xs font-semibold border-zinc-800 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white rounded-sm hover:cursor-pointer transition-all"
+                      // ИЗМЕНЕНИЕ: w-full на мобилках, sm:w-auto на планшетах
+                      className="w-full sm:w-auto h-9 px-4 text-xs font-semibold border-zinc-800 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white rounded-sm hover:cursor-pointer transition-all"
                     >
                       {returnMutation.isPending ? (
                         <Loader2 className="h-3 w-3 animate-spin" />
