@@ -5,6 +5,7 @@ interface UpdateBookInput {
   authorId?: string;
   genreId?: string;
   shelfId?: string;
+  description?:string;
 }
 
 export class BookService {
@@ -18,16 +19,22 @@ export class BookService {
     })
   }
 
+  
+
   static async getById(id: string) {
-    return await prisma.book.findUnique({
-      where: { id },
-      include: {
-        author: true,
-        genre: true,
-        shelf: true
+  return await prisma.book.findUnique({
+    where: { id },
+    include: {
+      author: true,
+      genre: true,
+      shelf: {
+        include: {
+          library: true
+        }
       }
-    })
-  }
+    }
+  });
+}
 
   static async deleteBook(id: string) {
     return await prisma.book.delete({
@@ -79,5 +86,42 @@ export class BookService {
         shelfId
       }
     })
+  }
+
+  static async borrowBook(bookId: string, userId: string) {
+    const book = await prisma.book.findUnique({
+      where: { id: bookId }
+    });
+
+    if (!book) {
+      throw new Error("BOOK_NOT_FOUND");
+    }
+
+    if (book.userId) {
+      throw new Error("BOOK_ALREADY_BORROWED");
+    }
+
+    return await prisma.book.update({
+      where: { id: bookId },
+      data: {
+        userId: userId
+      },
+      include: {
+        author: true,
+        genre: true,
+        shelf: {
+          include: { library: true }
+        }
+      }
+    });
+  }
+
+  static async returnBook(bookId: string) {
+    return await prisma.book.update({
+      where: { id: bookId },
+      data: {
+        userId: null
+      }
+    });
   }
 }

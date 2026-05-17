@@ -41,7 +41,6 @@ function DashboardPage() {
         ))}
       </div>
 
-      {/* Заглушки под будущие графики */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="h-64 rounded-sm border border-zinc-800 border-dashed flex items-center justify-center text-zinc-700">
           Activity Chart Placeholder

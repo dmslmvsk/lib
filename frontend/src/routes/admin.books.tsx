@@ -49,7 +49,7 @@ function BooksPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: (data: { title: string; authorId: string; genreId: string; shelfId: string }) => 
+    mutationFn: (data: { title: string; authorId: string; genreId: string; shelfId: string; description?: string; }) => 
       bookService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] })
@@ -59,7 +59,7 @@ function BooksPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { title: string; authorId: string; genreId: string; shelfId: string } }) => 
+    mutationFn: ({ id, data }: { id: string, data: { title: string; authorId: string; genreId: string; shelfId: string;description: string; } }) => 
       bookService.update({ id, data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] })
@@ -90,19 +90,20 @@ function BooksPage() {
   }
 
   const handleSave = (formData: Record<string, any>) => {
-    const payload = {
-      title: formData.title,
-      authorId: formData.authorId,
-      genreId: formData.genreId,
-      shelfId: formData.shelfId,
-    }
-
-    if (editingItem) {
-      updateMutation.mutate({ id: editingItem.id, data: payload })
-    } else {
-      createMutation.mutate(payload)
-    }
+  const payload = {
+    title: formData.title,
+    authorId: formData.authorId,
+    genreId: formData.genreId,
+    shelfId: formData.shelfId,
+    description: formData.description,
   }
+
+  if (editingItem) {
+    updateMutation.mutate({ id: editingItem.id, data: payload })
+  } else {
+    createMutation.mutate(payload)
+  }
+}
 
   const filteredBooks = (books || []).filter((book) =>
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -120,11 +121,19 @@ function BooksPage() {
   const availableShelves = shelves?.filter(s => s.libraryId === formValues.libraryId) || []
 
   const modalFields: FieldConfig[] = [
+    
     { 
       name: 'title', 
       label: 'Book Title', 
       placeholder: 'e.g. 1984, The Hobbit', 
       required: true 
+    },
+    {
+      name: 'description',
+      label: 'Description',
+      type: 'text',
+      placeholder: 'Book description',
+      fullWidth: true
     },
     {
       name: 'authorId',

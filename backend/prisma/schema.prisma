@@ -49,7 +49,6 @@ model Book {
   id          String   @id @default(uuid())
   title       String
   description String?  @db.Text
-  rating      Float    @default(0.0)
   
  
   authorId    String

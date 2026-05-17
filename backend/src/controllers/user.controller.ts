@@ -36,3 +36,23 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to delete user" });
   }
 };
+
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const profile = await UserService.getProfile(userId);
+
+    if (!profile) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch profile data" });
+  }
+};

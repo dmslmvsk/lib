@@ -26,4 +26,27 @@ export class UserService {
       where: { id },
     });
   }
+
+	static async getProfile(id: string) {
+    return await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        borrowedBooks: {
+          include: {
+            author: true,
+            genre: true,
+            shelf: {
+              include: {
+                library: true
+              }
+            }
+          }
+        }
+      }
+    });
+  }
 }

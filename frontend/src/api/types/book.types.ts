@@ -1,21 +1,35 @@
-import type { Author } from "./author.types";
-import type { Genre } from "./genre.types";
-import type { Shelf } from "./shelf.types";
+export interface Author {
+  id: string;
+  name: string;
+}
+
+export interface Genre {
+  id: string;
+  name: string;
+}
+
+export interface Library {
+  id: string;
+  name: string;
+}
+
+export interface Shelf {
+  id: string;
+  label: string;
+  libraryId: string; 
+  library: Library;   
+}
 
 export interface Book {
   id: string;
   title: string;
+  description: string | null;             
   authorId: string;
+  author: Author;             
   genreId: string;
+  genre: Genre;               
   shelfId: string;
-  author?: Author;
-  genre?: Genre;
-  shelf?: Shelf;
-}
-
-export interface CreateBookDTO {
-  title: string;
-  authorId: string;
-  genreId: string;
-  shelfId: string;
+  shelf: Shelf;               
+  userId: string | null;      
+  updatedAt: string;
 }
