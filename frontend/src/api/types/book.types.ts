@@ -33,3 +33,11 @@ export interface Book {
   userId: string | null;      
   updatedAt: string;
 }
+
+export interface CreateBookDTO {
+  title: string;
+  description: string;
+  authorId: string;
+  genreId: string;
+  shelfId: string;
+}

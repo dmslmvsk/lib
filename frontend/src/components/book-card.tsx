@@ -1,4 +1,4 @@
-import { User, Star, Tag, ArrowRight, Bookmark } from "lucide-react"
+import { User, Tag, ArrowRight, Bookmark } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -49,14 +49,7 @@ export function BookCard({ book }: { book: Book }) {
         </div>
       </CardContent>
 
-      <CardFooter className="grid grid-cols-2 gap-2 px-5 pb-5 pt-2">
-        <Button 
-          variant="default" 
-          disabled={!isAvailable}
-          className="w-full rounded-sm bg-indigo-600 hover:bg-indigo-500 text-white font-bold h-9 text-[11px] uppercase tracking-wider transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:bg-zinc-800"
-        >
-          Borrow
-        </Button>
+      <CardFooter className="px-5 pb-5 pt-2 w-3/4">
         <Link 
           to="/books/$bookId" 
           params={{ bookId: book.id }}

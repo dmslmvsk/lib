@@ -3,10 +3,16 @@ import { BookService } from "../services/book.service.js";
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const books = await BookService.getAll();
+    const { search, genreId } = req.query;
+
+    const books = await BookService.getAll({
+      search: search as string,
+      genreId: genreId as string,
+    });
+
     res.json(books);
   } catch (err) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Failed to fetch archive records" });
   }
 };
 

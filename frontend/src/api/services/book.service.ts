@@ -2,10 +2,8 @@ import { api } from "../axios";
 import type { Book, CreateBookDTO } from "../types/book.types";
 
 export const bookService = {
-  getAll: async () => {
-    const response = await api.get<Book[]>('/books')
-    return response.data
-  },
+  getAll: (params?: { search?: string; genreId?: string }) => 
+  api.get('/books', { params }).then(res => res.data),
 
   getById: async (id: string) => {
     const response = await api.get<Book>(`/books/${id}`)

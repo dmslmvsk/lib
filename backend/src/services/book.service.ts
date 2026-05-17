@@ -9,15 +9,33 @@ interface UpdateBookInput {
 }
 
 export class BookService {
-  static async getAll() {
-    return await prisma.book.findMany({
-      include: {
-        author: true,
-        genre: true,
-        shelf: true
-      }
+  
+  static async getAll(filters: { search?: string; genreId?: string }) {
+  const { search, genreId } = filters;
+
+  const whereClause: any = {
+    ...(genreId && { genreId }),
+    
+    ...(search && {
+      OR: [
+        { title: { contains: search, mode: 'insensitive' as const } },
+        { author: { name: { contains: search, mode: 'insensitive' as const } } }
+      ]
     })
-  }
+  };
+
+  return await prisma.book.findMany({
+    where: whereClause,
+    include: {
+      author: true,
+      genre: true,
+      shelf: {
+        include: { library: true }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+}
 
   
 
