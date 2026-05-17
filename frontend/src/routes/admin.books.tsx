@@ -24,7 +24,7 @@ function BooksPage() {
 
   const { data: books, isLoading, isError } = useQuery({
     queryKey: ['books'],
-    queryFn: bookService.getAll,
+    queryFn: () => bookService.getAll(),
     retry: false
   })
 
@@ -49,7 +49,7 @@ function BooksPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: (data: { title: string; authorId: string; genreId: string; shelfId: string; description?: string; }) => 
+    mutationFn: (data: { title: string; authorId: string; genreId: string; shelfId: string; description: string; }) => 
       bookService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['books'] })
@@ -90,22 +90,22 @@ function BooksPage() {
   }
 
   const handleSave = (formData: Record<string, any>) => {
-  const payload = {
-    title: formData.title,
-    authorId: formData.authorId,
-    genreId: formData.genreId,
-    shelfId: formData.shelfId,
-    description: formData.description,
+    const payload = {
+      title: formData.title,
+      authorId: formData.authorId,
+      genreId: formData.genreId,
+      shelfId: formData.shelfId,
+      description: formData.description || "", 
+    }
+
+    if (editingItem) {
+      updateMutation.mutate({ id: editingItem.id, data: payload })
+    } else {
+      createMutation.mutate(payload)
+    }
   }
 
-  if (editingItem) {
-    updateMutation.mutate({ id: editingItem.id, data: payload })
-  } else {
-    createMutation.mutate(payload)
-  }
-}
-
-  const filteredBooks = (books || []).filter((book) =>
+  const filteredBooks = (books || []).filter((book: Book) =>
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 

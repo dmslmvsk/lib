@@ -3,7 +3,7 @@ import type { Book, CreateBookDTO } from "../types/book.types";
 
 export const bookService = {
   getAll: (params?: { search?: string; genreId?: string }) => 
-  api.get('/books', { params }).then(res => res.data),
+  api.get<Book[]>('/books', { params }).then(res => res.data),
 
   getById: async (id: string) => {
     const response = await api.get<Book>(`/books/${id}`)
