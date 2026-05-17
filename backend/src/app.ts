@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://207.154.225.68:5173'],
   credentials: true
 }));
 app.get("/health",(req:Request, res: Response) => {
