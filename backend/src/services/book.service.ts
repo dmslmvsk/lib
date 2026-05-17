@@ -116,11 +116,29 @@ export class BookService {
     });
   }
 
-  static async returnBook(bookId: string) {
+  static async returnBook(bookId: string, userId: string, userRole: string) {
+    const book = await prisma.book.findUnique({ 
+      where: { id: bookId } 
+    });
+
+    if (!book) {
+      throw new Error("BOOK_NOT_FOUND");
+    }
+
+    if (!book.userId) {
+      throw new Error("BOOK_NOT_BORROWED");
+    }
+
+    if (book.userId !== userId && userRole !== "ADMIN") {
+      throw new Error("FORBIDDEN_RETURN");
+    }
+
     return await prisma.book.update({
       where: { id: bookId },
-      data: {
-        userId: null
+      data: { userId: null },
+      include: {
+        author: true,
+        shelf: { include: { library: true } }
       }
     });
   }

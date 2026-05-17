@@ -104,3 +104,35 @@ export const borrowBook = async (req: Request, res: Response) => {
   }
 };
 
+export const returnBook = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    if (typeof id !== "string") {
+      return res.status(400).json({ error: "Invalid ID provided" });
+    }
+    if (!req.user) {
+        return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const { userId, role } = req.user;
+
+    const result = await BookService.returnBook(id, userId, role);
+    
+    res.json({
+      message: "Success: Item returned to library",
+      book: result
+    });
+
+  } catch (err: any) {
+    switch (err.message) {
+      case "BOOK_NOT_FOUND":
+        return res.status(404).json({ error: "Record not found" });
+      case "BOOK_NOT_BORROWED":
+        return res.status(400).json({ error: "Item is already in the library" });
+      case "FORBIDDEN_RETURN":
+        return res.status(403).json({ error: "You don't have permission to return this item" });
+      default:
+        res.status(500).json({ error: "Internal server error during return process" });
+    }
+  }
+};

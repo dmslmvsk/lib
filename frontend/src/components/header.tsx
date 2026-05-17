@@ -1,97 +1,89 @@
 import { Link, useNavigate, useRouter } from '@tanstack/react-router'
-import { Library, User, LogIn,LogOut } from "lucide-react"
+import { Library, User, LogIn, LogOut, ShieldAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuthStore } from '@/store/useAuthStore'
 import { toast } from 'sonner'
-export function Header() {
 
-  const {user, logout} = useAuthStore();
+export function Header() {
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const router = useRouter();
+
   const logoutUser = async () => {
     logout();
-    
-    await router.invalidate(); 
-    
-    toast.success("Logged out successfully!");
+    await router.invalidate();
+    toast.success("Connection terminated. Logged out.");
     navigate({ to: '/login' });
   }
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-background border-b border-border">
-      <div className="w-full flex h-16 items-center justify-between px-6">
-        <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="bg-primary p-1.5 rounded-sm">
-              <Library className="h-5 w-5 text-primary-foreground" />
+    <header className="sticky top-0 z-50 w-full bg-[#0a0a0a]/80 backdrop-blur-md border-b border-zinc-800">
+      <div className="container mx-auto flex h-16 items-center justify-between px-2">
+        
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="bg-indigo-600 p-1.5 rounded-none transition-transform group-hover:rotate-90 duration-300">
+              <Library className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-bold tracking-tighter text-foreground uppercase">
-              Library<span className="text-primary">Hub</span>
+            <span className="text-xl font-black tracking-[0.1em] text-white uppercase italic">
+              LIB<span className="text-indigo-500">HUB</span>
             </span>
           </Link>
-
-          <nav className="hidden md:flex items-center gap-1">
-            <Link 
-              to="/" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Catalog
-            </Link>
-            <Link 
-              to="/login" 
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              My Books
-            </Link>
-          </nav>
         </div>
 
-          {user?
-          <div className="flex items-center gap-2">
-            <Link to="/profile">
-            <Button 
-            variant="default"
-            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
-          >
-            <User className="h-4 w-4" />
-            Profile
-          </Button>
+        <div className="flex items-center gap-6">
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex flex-col items-end mr-2">
+                <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">Active User</span>
+                <span className="text-xs font-mono text-zinc-400">{user.email}</span>
+              </div>
+
+              <div className="flex items-center gap-2 border-l border-zinc-800 pl-4">
+                {user.role === "ADMIN" && (
+                  <Link to="/admin">
+                    <Button 
+                      variant="ghost"
+                      className="h-9 px-4 text-[10px] font-black uppercase tracking-widest text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-none border border-amber-500/20"
+                    >
+                      <ShieldAlert className="h-3 w-3 mr-2" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
+
+                {/* Dashboard */}
+                <Link to="/dashboard">
+                  <Button 
+                    variant="default"
+                    className="h-9 px-4 text-[10px] font-black uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white rounded-none shadow-[4px_4px_0px_0px_rgba(79,70,229,0.2)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all hover:cursor-pointer"
+                  >
+                    <User className="h-3 w-3 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+
+                <Button 
+                  onClick={logoutUser}
+                  variant="ghost"
+                  className="h-9 w-9 p-0 text-zinc-500 hover:text-red-500 hover:bg-red-500/10 rounded-none border border-transparent hover:border-red-500/20 hover:cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Link to="/login">
+              <Button 
+                variant="default"
+                className="h-10 px-8 text-[10px] font-black uppercase tracking-[0.2em] bg-white text-black hover:bg-indigo-500 hover:text-white rounded-none transition-colors"
+              >
+                <LogIn className="h-4 w-4 mr-2" />
+                Access Archive
+              </Button>
             </Link>
-          <Button 
-            onClick={logoutUser}
-            variant="secondary"
-            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2 hover:bg-accent"
-          >
-            <LogOut  className="h-4 w-4" />
-            Sign Out
-          </Button>
-          
-          {user.role === "ADMIN"?
-             <Link to="/admin">
-            <Button 
-            variant="default"
-            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
-          >
-            <User className="h-4 w-4" />
-            Admin
-          </Button>
-            </Link>
-            :
-            <div></div>
-        }
-          </div>
-          :
-          <Link to="/login">
-          <Button 
-            variant="default"
-            className="h-10 px-8 text-sm font-medium transition-all rounded-sm hover:cursor-pointer flex gap-2"
-          >
-            <LogIn className='h-4 w-4'/>
-            Sign In
-          </Button> 
-          </Link>
-          
-          }
-          
+          )}
+        </div>
       </div>
     </header>
   )

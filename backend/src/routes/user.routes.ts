@@ -3,9 +3,11 @@ import { getUsers, updateUserRole, deleteUser, getProfile } from "../controllers
 import { authMiddleware } from "../middlewares/auth.middleware.js"; 
 import { adminMiddleware } from "../middlewares/admin.middleware.js";
 
-export const userRoutes = Router();
+const router = Router();
 
-userRoutes.get("/me", authMiddleware, getProfile);
-userRoutes.get("/", authMiddleware,adminMiddleware, getUsers);
-userRoutes.put("/:id", authMiddleware,adminMiddleware, updateUserRole);
-userRoutes.delete("/:id", authMiddleware,adminMiddleware, deleteUser);
+router.get("/me", authMiddleware, getProfile);
+router.get("/", authMiddleware,adminMiddleware, getUsers);
+router.put("/:id", authMiddleware,adminMiddleware, updateUserRole);
+router.delete("/:id", authMiddleware,adminMiddleware, deleteUser);
+
+export default router;

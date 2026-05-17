@@ -31,7 +31,6 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-zinc-100">
-      {/* Hero Section */}
       <div className="border-b border-zinc-800 bg-zinc-900/30">
         <div className="container mx-auto px-6 py-16">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -61,7 +60,6 @@ function Index() {
         </div>
       </div>
 
-      {/* Catalog Grid */}
       <div className="container mx-auto px-6 py-12">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
