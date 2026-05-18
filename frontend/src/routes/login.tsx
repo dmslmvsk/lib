@@ -55,22 +55,22 @@ function Login() {
     <div className="min-h-dvh bg-[#0a0a0a] flex flex-col items-center justify-center p-4">
       <LoginForm onSubmit={handleLoginSubmit}/>
       
-      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-100">
-        <Button 
-          variant="outline"
-          className="w-full h-11 rounded-sm border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors" 
-          onClick={loginAsAdmin}
-        >
-          Login as ADMIN
-        </Button>
-        <Button 
-          variant="outline"
-          className="w-full h-11 rounded-sm border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors" 
-          onClick={loginAsUser}
-        >
-          Login as USER
-        </Button>
-      </div>
+      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 w-full max-w-[400px]"> 
+  <Button 
+    variant="outline"
+    className="flex-1 h-11 rounded-md border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-all active:scale-95" 
+    onClick={loginAsAdmin}
+  >
+    Login as ADMIN
+  </Button>
+  <Button 
+    variant="outline"
+    className="flex-1 h-11 rounded-md border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-all active:scale-95" 
+    onClick={loginAsUser}
+  >
+    Login as USER
+  </Button>
+</div>
     </div>
   )
 }
