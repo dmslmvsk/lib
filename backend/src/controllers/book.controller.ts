@@ -34,11 +34,11 @@ export const getById = async (req: Request, res: Response) => {
 
 export const createBook = async (req: Request, res: Response) => {
   try {
-    const { title, authorId, shelfId, genreId } = req.body;
-    if (!title || !authorId || !shelfId || !genreId) {
+    const { title, authorId, shelfId, genreId, description } = req.body;
+    if (!title || !authorId || !shelfId || !genreId || !description) {
       return res.status(400).json({ error: "All fields are required" });
     }
-    const book = await BookService.createBook(title, authorId, genreId, shelfId);
+    const book = await BookService.createBook(title, authorId, genreId, shelfId,description);
     res.status(201).json(book);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
