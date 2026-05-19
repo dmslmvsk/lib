@@ -23,7 +23,7 @@ export interface Shelf {
 export interface Book {
   id: string;
   title: string;
-  description: string | null;             
+  description: string;             
   authorId: string;
   author: Author;             
   genreId: string;

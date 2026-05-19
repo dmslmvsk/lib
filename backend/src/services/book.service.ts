@@ -82,7 +82,7 @@ export class BookService {
     })
   }
 
-  static async createBook(title: string, authorId: string, genreId: string, shelfId: string) {
+  static async createBook(title: string, authorId: string, genreId: string, shelfId: string, description:string) {
     const genre = await prisma.genre.findUnique({ where: { id: genreId } })
     if (!genre) throw new Error("Genre not found")
 
@@ -99,6 +99,7 @@ export class BookService {
     return await prisma.book.create({
       data: {
         title,
+        description,
         authorId,
         genreId,
         shelfId
