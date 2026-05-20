@@ -1,9 +1,9 @@
+
+
 import app from "./app.js"
-import dotenv from "dotenv"
 
-dotenv.config()
-
-const PORT = process.env.PORT || 5000;
+console.log("Мой DATABASE_URL:", process.env.DATABASE_URL);
+const PORT = process.env.BACKEND_PORT || 5000;
 
 const startServer = () => {
 	try {
@@ -15,5 +15,4 @@ const startServer = () => {
 		}
 
 	}
-
-	startServer();
+startServer();

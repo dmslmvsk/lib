@@ -1,5 +1,6 @@
 import prisma from "../prisma.js";
 import bcrypt from "bcryptjs";
+import { log } from "console";
 import jwt from "jsonwebtoken";
 
 
@@ -8,8 +9,8 @@ export class AuthService {
 	static async register(email:string,password:string){
 		const secret = process.env.JWT_SECRET;
 		if (!secret) {
-  throw new Error("Internal Server Error: JWT_SECRET is missing");
-}
+  		throw new Error("Internal Server Error: JWT_SECRET is missing");
+	}
 		const existingUser = await prisma.user.findUnique({
 			where:{
 				email

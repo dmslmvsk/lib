@@ -1,3 +1,6 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import express from "express"
 import type { Application, Request, Response } from 'express';
 import cors from "cors"
@@ -9,7 +12,12 @@ import shelfRoutes from "./routes/shelf.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js";
 import statsRoutes from "./routes/stats.routes.js";
+
 const app = express();
+
+
+
+
 
 app.use(express.json());
 app.use(cors({
@@ -27,7 +35,7 @@ app.get("/health",(req:Request, res: Response) => {
 })
 
 const apiRouter = express.Router();
-
+console.log("Мой DATABASE_URL:", process.env.DATABASE_URL);
 apiRouter.use("/authors", authorRoutes);
 apiRouter.use("/libraries", libraryRoutes);
 apiRouter.use("/genres", genreRoutes);
