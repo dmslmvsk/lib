@@ -13,7 +13,7 @@ export const getUsers = async (req: Request, res: Response) => {
 export const updateUserRole = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     const { role } = req.body;
@@ -27,7 +27,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     await UserService.delete(id);

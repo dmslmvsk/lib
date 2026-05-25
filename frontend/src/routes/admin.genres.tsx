@@ -1,50 +1,61 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { genreService } from '../api/services/genre.service'
-import { useState } from 'react'
-import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
-import { AdminModal, type FieldConfig } from '@/components/admin-modal'
-import type { Genre } from '@/types/book'
+import { createFileRoute } from "@tanstack/react-router"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { genreService } from "../api/services/genre.service"
+import { useState } from "react"
+import {
+  AdminPageTemplate,
+  type TableColumn,
+} from "@/components/admin-page-template"
+import { AdminModal, type FieldConfig } from "@/components/admin-modal"
+import type { Genre } from "@/types/book"
 
-export const Route = createFileRoute('/admin/genres')({
+export const Route = createFileRoute("/admin/genres")({
   component: GenresPage,
 })
 
 function GenresPage() {
   const queryClient = useQueryClient()
-  const [searchQuery, setSearchQuery] = useState('')
-  
+  const [searchQuery, setSearchQuery] = useState("")
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [editingItem, setEditingItem] = useState<{ id: string; name: string } | null>(null)
+  const [editingItem, setEditingItem] = useState<{
+    id: string
+    name: string
+  } | null>(null)
 
-  const { data: genres, isLoading, isError } = useQuery<Genre[]>({
-    queryKey: ['genres'],
+  const {
+    data: genres,
+    isLoading,
+    isError,
+  } = useQuery<Genre[]>({
+    queryKey: ["genres"],
     queryFn: genreService.getAll,
-    retry: false
+    retry: false,
   })
 
   const createMutation = useMutation({
     mutationFn: (name: string) => genreService.create({ name }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      queryClient.invalidateQueries({ queryKey: ["genres"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Create error')
+    onError: (err: any) => alert(err.response?.data?.error || "Create error"),
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => genreService.update({ id, data }),
+    mutationFn: ({ id, data }: { id: string; data: { name: string } }) =>
+      genreService.update({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['genres'] })
+      queryClient.invalidateQueries({ queryKey: ["genres"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Update error')
+    onError: (err: any) => alert(err.response?.data?.error || "Update error"),
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => genreService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['genres'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["genres"] }),
   })
 
   const openCreateModal = () => {
@@ -64,7 +75,10 @@ function GenresPage() {
 
   const handleSave = (formData: Record<string, any>) => {
     if (editingItem) {
-      updateMutation.mutate({ id: editingItem.id, data: { name: formData.name } })
+      updateMutation.mutate({
+        id: editingItem.id,
+        data: { name: formData.name },
+      })
     } else {
       createMutation.mutate(formData.name)
     }
@@ -75,15 +89,26 @@ function GenresPage() {
   )
 
   const columns: TableColumn<any>[] = [
-    { header: 'Name', render: (genre) => genre.name },
-    { header: 'ID', render: (genre) => <span className="text-zinc-500 font-mono text-xs">{genre.id}</span> }
+    { header: "Name", render: (genre) => genre.name },
+    {
+      header: "ID",
+      render: (genre) => (
+        <span className="font-mono text-xs text-zinc-500">{genre.id}</span>
+      ),
+    },
   ]
 
   const modalFields: FieldConfig[] = [
-    { name: 'name', label: 'Genre Name', placeholder: 'e.g. Science Fiction', required: true }
+    {
+      name: "name",
+      label: "Genre Name",
+      placeholder: "e.g. Science Fiction",
+      required: true,
+    },
   ]
 
-  if (isError) return <div className="text-red-500 p-4">Error loading genres.</div>
+  if (isError)
+    return <div className="p-4 text-red-500">Error loading genres.</div>
 
   return (
     <>
@@ -98,15 +123,20 @@ function GenresPage() {
         onAdd={openCreateModal}
         onEdit={openEditModal}
         onDelete={(genre) => {
-          if (confirm(`Delete "${genre.name}"?`)) deleteMutation.mutate(genre.id)
+          if (confirm(`Delete "${genre.name}"?`))
+            deleteMutation.mutate(genre.id)
         }}
       />
 
       <AdminModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={editingItem ? 'Edit Genre' : 'Add New Genre'}
-        description={editingItem ? 'Update the details of the genre.' : 'Fill in the form to create a new genre.'}
+        title={editingItem ? "Edit Genre" : "Add New Genre"}
+        description={
+          editingItem
+            ? "Update the details of the genre."
+            : "Fill in the form to create a new genre."
+        }
         fields={modalFields}
         initialData={editingItem}
         onSave={handleSave}

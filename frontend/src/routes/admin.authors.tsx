@@ -1,48 +1,59 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { authorService } from '../api/services/author.service'
-import { useState } from 'react'
-import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
-import { AdminModal, type FieldConfig } from '@/components/admin-modal'
-import type { Author } from '@/types/book'
+import { createFileRoute } from "@tanstack/react-router"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { authorService } from "../api/services/author.service"
+import { useState } from "react"
+import {
+  AdminPageTemplate,
+  type TableColumn,
+} from "@/components/admin-page-template"
+import { AdminModal, type FieldConfig } from "@/components/admin-modal"
+import type { Author } from "@/types/book"
 
-export const Route = createFileRoute('/admin/authors')({
+export const Route = createFileRoute("/admin/authors")({
   component: AuthorsPage,
 })
 
 function AuthorsPage() {
   const queryClient = useQueryClient()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [editingItem, setEditingItem] = useState<{ id: string; name: string } | null>(null)
+  const [editingItem, setEditingItem] = useState<{
+    id: string
+    name: string
+  } | null>(null)
 
-  const { data: authors, isLoading, isError } = useQuery<Author[]>({
-    queryKey: ['authors'],
+  const {
+    data: authors,
+    isLoading,
+    isError,
+  } = useQuery<Author[]>({
+    queryKey: ["authors"],
     queryFn: authorService.getAll,
-    retry: false
+    retry: false,
   })
 
   const createMutation = useMutation({
     mutationFn: (name: string) => authorService.create({ name }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authors'] })
+      queryClient.invalidateQueries({ queryKey: ["authors"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Create error')
+    onError: (err: any) => alert(err.response?.data?.error || "Create error"),
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => authorService.update({ id, data }),
+    mutationFn: ({ id, data }: { id: string; data: { name: string } }) =>
+      authorService.update({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['authors'] })
+      queryClient.invalidateQueries({ queryKey: ["authors"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Update error')
+    onError: (err: any) => alert(err.response?.data?.error || "Update error"),
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => authorService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['authors'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authors"] }),
   })
 
   const openCreateModal = () => {
@@ -62,7 +73,10 @@ function AuthorsPage() {
 
   const handleSave = (formData: Record<string, any>) => {
     if (editingItem) {
-      updateMutation.mutate({ id: editingItem.id, data: { name: formData.name } })
+      updateMutation.mutate({
+        id: editingItem.id,
+        data: { name: formData.name },
+      })
     } else {
       createMutation.mutate(formData.name)
     }
@@ -73,15 +87,26 @@ function AuthorsPage() {
   )
 
   const columns: TableColumn<any>[] = [
-    { header: 'Author Name', render: (author) => author.name },
-    { header: 'ID', render: (author) => <span className="text-zinc-500 font-mono text-xs">{author.id}</span> }
+    { header: "Author Name", render: (author) => author.name },
+    {
+      header: "ID",
+      render: (author) => (
+        <span className="font-mono text-xs text-zinc-500">{author.id}</span>
+      ),
+    },
   ]
 
   const modalFields: FieldConfig[] = [
-    { name: 'name', label: 'Full Name', placeholder: 'e.g. Stephen King', required: true }
+    {
+      name: "name",
+      label: "Full Name",
+      placeholder: "e.g. Stephen King",
+      required: true,
+    },
   ]
 
-  if (isError) return <div className="text-red-500 p-4">Error loading authors.</div>
+  if (isError)
+    return <div className="p-4 text-red-500">Error loading authors.</div>
 
   return (
     <>
@@ -96,15 +121,20 @@ function AuthorsPage() {
         onAdd={openCreateModal}
         onEdit={openEditModal}
         onDelete={(author) => {
-          if (confirm(`Delete "${author.name}"?`)) deleteMutation.mutate(author.id)
+          if (confirm(`Delete "${author.name}"?`))
+            deleteMutation.mutate(author.id)
         }}
       />
 
       <AdminModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={editingItem ? 'Edit Author' : 'Add New Author'}
-        description={editingItem ? 'Update author info.' : 'Add a new author to the library.'}
+        title={editingItem ? "Edit Author" : "Add New Author"}
+        description={
+          editingItem
+            ? "Update author info."
+            : "Add a new author to the library."
+        }
         fields={modalFields}
         initialData={editingItem}
         onSave={handleSave}

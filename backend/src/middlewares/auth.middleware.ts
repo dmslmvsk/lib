@@ -1,14 +1,18 @@
-import type { Request, Response, NextFunction } from "express"
-import jwt from "jsonwebtoken"
+import type { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
 interface TokenPayload {
   userId: string;
   role: string;
 }
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const authHeader = req.headers.authorization;
-  
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ error: "Access denied. Token missing." });
     return;
@@ -28,15 +32,14 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     }
 
     const decoded = jwt.verify(token, secret) as TokenPayload;
-    
-    // Теперь это поле подхватится из нашего express.d.ts автоматически
+
     req.user = {
       userId: decoded.userId,
-      role: decoded.role
+      role: decoded.role,
     };
 
     next();
   } catch (error) {
     res.status(403).json({ error: "Invalid token" });
   }
-}
+};

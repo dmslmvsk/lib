@@ -1,13 +1,19 @@
 import { Router } from "express";
-import { createShelf,deleteShelf,getById,getShelves, updateShelf } from "../controllers/shelf.controller.js";
+import {
+  createShelf,
+  deleteShelf,
+  getById,
+  getShelves,
+  updateShelf,
+} from "../controllers/shelf.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { adminMiddleware } from "../middlewares/admin.middleware.js";
 
 const router = Router();
 
-router.get("/",getShelves);
-router.get("/:id",getById);
-router.post("/",authMiddleware,adminMiddleware,createShelf);
-router.delete("/:id",authMiddleware,adminMiddleware,deleteShelf)
-router.put("/:id",authMiddleware,adminMiddleware,updateShelf)
-export default router
+router.get("/", getShelves);
+router.get("/:id", getById);
+router.post("/", authMiddleware, adminMiddleware, createShelf);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteShelf);
+router.put("/:id", authMiddleware, adminMiddleware, updateShelf);
+export default router;

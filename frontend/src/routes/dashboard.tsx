@@ -1,19 +1,19 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from '@/api/axios'
-import { 
-  User, 
-  Calendar, 
-  BookOpen, 
-  Loader2, 
+import { createFileRoute, Link } from "@tanstack/react-router"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { api } from "@/api/axios"
+import {
+  User,
+  Calendar,
+  BookOpen,
+  Loader2,
   RotateCcw,
   ShieldCheck,
-  ArrowRight
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
+  ArrowRight,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute("/dashboard")({
   component: DashboardPage,
 })
 
@@ -21,66 +21,79 @@ function DashboardPage() {
   const queryClient = useQueryClient()
 
   const { data: profile, isLoading } = useQuery({
-    queryKey: ['profile'],
-    queryFn: () => api.get('/users/me').then(res => res.data),
+    queryKey: ["profile"],
+    queryFn: () => api.get("/users/me").then((res) => res.data),
   })
 
   const returnMutation = useMutation({
     mutationFn: (bookId: string) => api.post(`/books/${bookId}/return`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] })
-      queryClient.invalidateQueries({ queryKey: ['public-books'] })
+      queryClient.invalidateQueries({ queryKey: ["profile"] })
+      queryClient.invalidateQueries({ queryKey: ["public-books"] })
       toast.success("Book returned successfully")
     },
-    onError: () => toast.error("Failed to return book")
+    onError: () => toast.error("Failed to return book"),
   })
 
-  if (isLoading) return (
-    <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
-      <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
-    </div>
-  )
+  if (isLoading)
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#0a0a0a]">
+        <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
+      </div>
+    )
 
   return (
-    <div className="min-h-dvh bg-[#0a0a0a] text-zinc-200 p-4 md:p-12">
+    <div className="min-h-dvh bg-[#0a0a0a] p-4 text-zinc-200 md:p-12">
       <div className="container mx-auto max-w-5xl space-y-8 md:space-y-10">
-        
         <header className="border-b border-zinc-900 pb-6 md:pb-8">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">User Dashboard</h1>
-          <p className="text-zinc-500 text-xs md:text-sm mt-1">Manage your profile and active readings.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+            User Dashboard
+          </h1>
+          <p className="mt-1 text-xs text-zinc-500 md:text-sm">
+            Manage your profile and active readings.
+          </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-start">
-          
+        <div className="grid grid-cols-1 items-start gap-6 md:gap-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <div className="p-5 md:p-6 bg-zinc-950 border border-zinc-900 rounded-sm space-y-6">
+            <div className="space-y-6 rounded-sm border border-zinc-900 bg-zinc-950 p-5 md:p-6">
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-600/10 rounded-sm">
+                  <div className="rounded-sm bg-indigo-600/10 p-2">
                     <User className="h-5 w-5 text-indigo-500" />
                   </div>
                   <div className="space-y-0.5 overflow-hidden">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Email Address</p>
-                    <p className="text-sm font-medium text-zinc-200 truncate">{profile.email}</p>
+                    <p className="text-[10px] font-bold tracking-wider text-zinc-500 uppercase">
+                      Email Address
+                    </p>
+                    <p className="truncate text-sm font-medium text-zinc-200">
+                      {profile.email}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-500/10 rounded-sm">
+                  <div className="rounded-sm bg-amber-500/10 p-2">
                     <ShieldCheck className="h-5 w-5 text-amber-500" />
                   </div>
                   <div className="space-y-0.5">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Access Level</p>
-                    <p className="text-sm font-medium text-zinc-200">{profile.role}</p>
+                    <p className="text-[10px] font-bold tracking-wider text-zinc-500 uppercase">
+                      Access Level
+                    </p>
+                    <p className="text-sm font-medium text-zinc-200">
+                      {profile.role}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-zinc-900 grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 border-t border-zinc-900 pt-6">
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-zinc-500">
                     <Calendar size={12} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Joined</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase">
+                      Joined
+                    </span>
                   </div>
                   <p className="text-xs font-medium text-zinc-300">
                     {new Date(profile.createdAt).toLocaleDateString()}
@@ -89,7 +102,9 @@ function DashboardPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-zinc-500">
                     <BookOpen size={12} />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Books</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase">
+                      Books
+                    </span>
                   </div>
                   <p className="text-xs font-medium text-zinc-300">
                     {profile.borrowedBooks.length} Active
@@ -99,39 +114,46 @@ function DashboardPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-8 space-y-6">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+          <div className="space-y-6 lg:col-span-8">
+            <h3 className="flex items-center gap-2 text-xs font-bold tracking-widest text-zinc-500 uppercase">
               <ArrowRight size={14} className="text-indigo-500" />
               Your Active Borrows
             </h3>
 
             {profile.borrowedBooks.length === 0 ? (
-              <div className="py-12 md:py-16 border border-dashed border-zinc-900 rounded-sm text-center bg-zinc-950/30">
-                <p className="text-zinc-500 text-xs md:text-sm">You don't have any borrowed books.</p>
-                <Link to="/" className="text-indigo-500 text-xs font-semibold hover:underline mt-3 inline-block">
+              <div className="rounded-sm border border-dashed border-zinc-900 bg-zinc-950/30 py-12 text-center md:py-16">
+                <p className="text-xs text-zinc-500 md:text-sm">
+                  You don't have any borrowed books.
+                </p>
+                <Link
+                  to="/"
+                  className="mt-3 inline-block text-xs font-semibold text-indigo-500 hover:underline"
+                >
                   Browse Catalog
                 </Link>
               </div>
             ) : (
               <div className="grid gap-3">
                 {profile.borrowedBooks.map((book: any) => (
-                  <div 
-                    key={book.id} 
-                    className="p-4 bg-zinc-900/40 border border-zinc-900 rounded-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-zinc-800 transition-colors"
+                  <div
+                    key={book.id}
+                    className="flex flex-col justify-between gap-4 rounded-sm border border-zinc-900 bg-zinc-900/40 p-4 transition-colors hover:border-zinc-800 sm:flex-row sm:items-center"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-semibold text-zinc-100 text-sm md:text-base leading-tight">{book.title}</h4>
+                      <h4 className="text-sm leading-tight font-semibold text-zinc-100 md:text-base">
+                        {book.title}
+                      </h4>
                       <p className="text-xs text-zinc-500">
                         {book.author.name} • {book.shelf.library.name}
                       </p>
                     </div>
-                    <Button 
+                    <Button
                       onClick={() => returnMutation.mutate(book.id)}
                       disabled={returnMutation.isPending}
                       variant="outline"
                       size="sm"
                       // ИЗМЕНЕНИЕ: w-full на мобилках, sm:w-auto на планшетах
-                      className="w-full sm:w-auto h-9 px-4 text-xs font-semibold border-zinc-800 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white rounded-sm hover:cursor-pointer transition-all"
+                      className="h-9 w-full rounded-sm border-zinc-800 px-4 text-xs font-semibold transition-all hover:cursor-pointer hover:border-indigo-600 hover:bg-indigo-600 hover:text-white sm:w-auto"
                     >
                       {returnMutation.isPending ? (
                         <Loader2 className="h-3 w-3 animate-spin" />
@@ -146,7 +168,6 @@ function DashboardPage() {
               </div>
             )}
           </div>
-
         </div>
       </div>
     </div>

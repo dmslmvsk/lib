@@ -7,7 +7,6 @@ export const getAdminStats = async (req: Request, res: Response) => {
       prisma.book.count(),
       prisma.user.count(),
       prisma.author.count(),
-      // Считаем книги, у которых userId не пустой (значит, они на руках)
       prisma.book.count({ where: { NOT: { userId: null } } }),
     ]);
 

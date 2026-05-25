@@ -1,49 +1,56 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { libraryService } from '../api/services/library.service'
-import { useState } from 'react'
-import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
-import { AdminModal, type FieldConfig } from '@/components/admin-modal'
-import type { Library } from '@/api/types/library.types'
+import { createFileRoute } from "@tanstack/react-router"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { libraryService } from "../api/services/library.service"
+import { useState } from "react"
+import {
+  AdminPageTemplate,
+  type TableColumn,
+} from "@/components/admin-page-template"
+import { AdminModal, type FieldConfig } from "@/components/admin-modal"
+import type { Library } from "@/api/types/library.types"
 
-export const Route = createFileRoute('/admin/libraries')({
+export const Route = createFileRoute("/admin/libraries")({
   component: LibrariesPage,
 })
 
 function LibrariesPage() {
   const queryClient = useQueryClient()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<Library | null>(null)
 
-  const { data: libraries, isLoading, isError } = useQuery({
-    queryKey: ['libraries'],
+  const {
+    data: libraries,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["libraries"],
     queryFn: libraryService.getAll,
-    retry: false
+    retry: false,
   })
 
   const createMutation = useMutation({
     mutationFn: (data: { name: string }) => libraryService.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['libraries'] })
+      queryClient.invalidateQueries({ queryKey: ["libraries"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Create error')
+    onError: (err: any) => alert(err.response?.data?.error || "Create error"),
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { name: string } }) => 
+    mutationFn: ({ id, data }: { id: string; data: { name: string } }) =>
       libraryService.update({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['libraries'] })
+      queryClient.invalidateQueries({ queryKey: ["libraries"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Update error')
+    onError: (err: any) => alert(err.response?.data?.error || "Update error"),
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => libraryService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['libraries'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["libraries"] }),
   })
 
   const openCreateModal = () => {
@@ -78,21 +85,30 @@ function LibrariesPage() {
   )
 
   const columns: TableColumn<Library>[] = [
-    { header: 'Library Name', render: (library) => library.name },
-    { header: 'Shelves Count', render: (library) => library.shelves?.length || 0 },
-    { header: 'ID', render: (library) => <span className="text-zinc-500 font-mono text-xs">{library.id}</span> }
+    { header: "Library Name", render: (library) => library.name },
+    {
+      header: "Shelves Count",
+      render: (library) => library.shelves?.length || 0,
+    },
+    {
+      header: "ID",
+      render: (library) => (
+        <span className="font-mono text-xs text-zinc-500">{library.id}</span>
+      ),
+    },
   ]
 
   const modalFields: FieldConfig[] = [
-    { 
-      name: 'name', 
-      label: 'Library Name', 
-      placeholder: 'e.g. Central Library, Science Branch', 
-      required: true 
-    }
+    {
+      name: "name",
+      label: "Library Name",
+      placeholder: "e.g. Central Library, Science Branch",
+      required: true,
+    },
   ]
 
-  if (isError) return <div className="text-red-500 p-4">Error loading libraries.</div>
+  if (isError)
+    return <div className="p-4 text-red-500">Error loading libraries.</div>
 
   return (
     <>
@@ -107,15 +123,20 @@ function LibrariesPage() {
         onAdd={openCreateModal}
         onEdit={openEditModal}
         onDelete={(library) => {
-          if (confirm(`Delete library "${library.name}"?`)) deleteMutation.mutate(library.id)
+          if (confirm(`Delete library "${library.name}"?`))
+            deleteMutation.mutate(library.id)
         }}
       />
 
       <AdminModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        title={editingItem ? 'Edit Library' : 'Add New Library'}
-        description={editingItem ? 'Update the library building details.' : 'Create a new library branch.'}
+        title={editingItem ? "Edit Library" : "Add New Library"}
+        description={
+          editingItem
+            ? "Update the library building details."
+            : "Create a new library branch."
+        }
         fields={modalFields}
         initialData={editingItem}
         onSave={handleSave}

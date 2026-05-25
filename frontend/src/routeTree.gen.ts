@@ -8,189 +8,189 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
-import { Route as AdminUsersRouteImport } from './routes/admin.users'
-import { Route as AdminShelvesRouteImport } from './routes/admin.shelves'
-import { Route as AdminLibrariesRouteImport } from './routes/admin.libraries'
-import { Route as AdminGenresRouteImport } from './routes/admin.genres'
-import { Route as AdminBooksRouteImport } from './routes/admin.books'
-import { Route as AdminAuthorsRouteImport } from './routes/admin.authors'
+import { Route as rootRouteImport } from "./routes/__root"
+import { Route as RegisterRouteImport } from "./routes/register"
+import { Route as LoginRouteImport } from "./routes/login"
+import { Route as DashboardRouteImport } from "./routes/dashboard"
+import { Route as AdminRouteImport } from "./routes/admin"
+import { Route as AboutRouteImport } from "./routes/about"
+import { Route as IndexRouteImport } from "./routes/index"
+import { Route as AdminIndexRouteImport } from "./routes/admin.index"
+import { Route as BooksBookIdRouteImport } from "./routes/books.$bookId"
+import { Route as AdminUsersRouteImport } from "./routes/admin.users"
+import { Route as AdminShelvesRouteImport } from "./routes/admin.shelves"
+import { Route as AdminLibrariesRouteImport } from "./routes/admin.libraries"
+import { Route as AdminGenresRouteImport } from "./routes/admin.genres"
+import { Route as AdminBooksRouteImport } from "./routes/admin.books"
+import { Route as AdminAuthorsRouteImport } from "./routes/admin.authors"
 
 const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
+  id: "/register",
+  path: "/register",
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: "/dashboard",
+  path: "/dashboard",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+  id: "/admin",
+  path: "/admin",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+  id: "/about",
+  path: "/about",
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => AdminRoute,
 } as any)
 const BooksBookIdRoute = BooksBookIdRouteImport.update({
-  id: '/books/$bookId',
-  path: '/books/$bookId',
+  id: "/books/$bookId",
+  path: "/books/$bookId",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
+  id: "/users",
+  path: "/users",
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminShelvesRoute = AdminShelvesRouteImport.update({
-  id: '/shelves',
-  path: '/shelves',
+  id: "/shelves",
+  path: "/shelves",
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminLibrariesRoute = AdminLibrariesRouteImport.update({
-  id: '/libraries',
-  path: '/libraries',
+  id: "/libraries",
+  path: "/libraries",
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminGenresRoute = AdminGenresRouteImport.update({
-  id: '/genres',
-  path: '/genres',
+  id: "/genres",
+  path: "/genres",
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminBooksRoute = AdminBooksRouteImport.update({
-  id: '/books',
-  path: '/books',
+  id: "/books",
+  path: "/books",
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminAuthorsRoute = AdminAuthorsRouteImport.update({
-  id: '/authors',
-  path: '/authors',
+  id: "/authors",
+  path: "/authors",
   getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/admin/authors': typeof AdminAuthorsRoute
-  '/admin/books': typeof AdminBooksRoute
-  '/admin/genres': typeof AdminGenresRoute
-  '/admin/libraries': typeof AdminLibrariesRoute
-  '/admin/shelves': typeof AdminShelvesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/books/$bookId': typeof BooksBookIdRoute
-  '/admin/': typeof AdminIndexRoute
+  "/": typeof IndexRoute
+  "/about": typeof AboutRoute
+  "/admin": typeof AdminRouteWithChildren
+  "/dashboard": typeof DashboardRoute
+  "/login": typeof LoginRoute
+  "/register": typeof RegisterRoute
+  "/admin/authors": typeof AdminAuthorsRoute
+  "/admin/books": typeof AdminBooksRoute
+  "/admin/genres": typeof AdminGenresRoute
+  "/admin/libraries": typeof AdminLibrariesRoute
+  "/admin/shelves": typeof AdminShelvesRoute
+  "/admin/users": typeof AdminUsersRoute
+  "/books/$bookId": typeof BooksBookIdRoute
+  "/admin/": typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/admin/authors': typeof AdminAuthorsRoute
-  '/admin/books': typeof AdminBooksRoute
-  '/admin/genres': typeof AdminGenresRoute
-  '/admin/libraries': typeof AdminLibrariesRoute
-  '/admin/shelves': typeof AdminShelvesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/books/$bookId': typeof BooksBookIdRoute
-  '/admin': typeof AdminIndexRoute
+  "/": typeof IndexRoute
+  "/about": typeof AboutRoute
+  "/dashboard": typeof DashboardRoute
+  "/login": typeof LoginRoute
+  "/register": typeof RegisterRoute
+  "/admin/authors": typeof AdminAuthorsRoute
+  "/admin/books": typeof AdminBooksRoute
+  "/admin/genres": typeof AdminGenresRoute
+  "/admin/libraries": typeof AdminLibrariesRoute
+  "/admin/shelves": typeof AdminShelvesRoute
+  "/admin/users": typeof AdminUsersRoute
+  "/books/$bookId": typeof BooksBookIdRoute
+  "/admin": typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/admin': typeof AdminRouteWithChildren
-  '/dashboard': typeof DashboardRoute
-  '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
-  '/admin/authors': typeof AdminAuthorsRoute
-  '/admin/books': typeof AdminBooksRoute
-  '/admin/genres': typeof AdminGenresRoute
-  '/admin/libraries': typeof AdminLibrariesRoute
-  '/admin/shelves': typeof AdminShelvesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/books/$bookId': typeof BooksBookIdRoute
-  '/admin/': typeof AdminIndexRoute
+  "/": typeof IndexRoute
+  "/about": typeof AboutRoute
+  "/admin": typeof AdminRouteWithChildren
+  "/dashboard": typeof DashboardRoute
+  "/login": typeof LoginRoute
+  "/register": typeof RegisterRoute
+  "/admin/authors": typeof AdminAuthorsRoute
+  "/admin/books": typeof AdminBooksRoute
+  "/admin/genres": typeof AdminGenresRoute
+  "/admin/libraries": typeof AdminLibrariesRoute
+  "/admin/shelves": typeof AdminShelvesRoute
+  "/admin/users": typeof AdminUsersRoute
+  "/books/$bookId": typeof BooksBookIdRoute
+  "/admin/": typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
-    | '/admin'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/admin/authors'
-    | '/admin/books'
-    | '/admin/genres'
-    | '/admin/libraries'
-    | '/admin/shelves'
-    | '/admin/users'
-    | '/books/$bookId'
-    | '/admin/'
+    | "/"
+    | "/about"
+    | "/admin"
+    | "/dashboard"
+    | "/login"
+    | "/register"
+    | "/admin/authors"
+    | "/admin/books"
+    | "/admin/genres"
+    | "/admin/libraries"
+    | "/admin/shelves"
+    | "/admin/users"
+    | "/books/$bookId"
+    | "/admin/"
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/admin/authors'
-    | '/admin/books'
-    | '/admin/genres'
-    | '/admin/libraries'
-    | '/admin/shelves'
-    | '/admin/users'
-    | '/books/$bookId'
-    | '/admin'
+    | "/"
+    | "/about"
+    | "/dashboard"
+    | "/login"
+    | "/register"
+    | "/admin/authors"
+    | "/admin/books"
+    | "/admin/genres"
+    | "/admin/libraries"
+    | "/admin/shelves"
+    | "/admin/users"
+    | "/books/$bookId"
+    | "/admin"
   id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/admin'
-    | '/dashboard'
-    | '/login'
-    | '/register'
-    | '/admin/authors'
-    | '/admin/books'
-    | '/admin/genres'
-    | '/admin/libraries'
-    | '/admin/shelves'
-    | '/admin/users'
-    | '/books/$bookId'
-    | '/admin/'
+    | "__root__"
+    | "/"
+    | "/about"
+    | "/admin"
+    | "/dashboard"
+    | "/login"
+    | "/register"
+    | "/admin/authors"
+    | "/admin/books"
+    | "/admin/genres"
+    | "/admin/libraries"
+    | "/admin/shelves"
+    | "/admin/users"
+    | "/books/$bookId"
+    | "/admin/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,103 +203,103 @@ export interface RootRouteChildren {
   BooksBookIdRoute: typeof BooksBookIdRoute
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
+    "/register": {
+      id: "/register"
+      path: "/register"
+      fullPath: "/register"
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
+    "/login": {
+      id: "/login"
+      path: "/login"
+      fullPath: "/login"
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+    "/dashboard": {
+      id: "/dashboard"
+      path: "/dashboard"
+      fullPath: "/dashboard"
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
+    "/admin": {
+      id: "/admin"
+      path: "/admin"
+      fullPath: "/admin"
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
+    "/about": {
+      id: "/about"
+      path: "/about"
+      fullPath: "/about"
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
+    "/": {
+      id: "/"
+      path: "/"
+      fullPath: "/"
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
+    "/admin/": {
+      id: "/admin/"
+      path: "/"
+      fullPath: "/admin/"
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/books/$bookId': {
-      id: '/books/$bookId'
-      path: '/books/$bookId'
-      fullPath: '/books/$bookId'
+    "/books/$bookId": {
+      id: "/books/$bookId"
+      path: "/books/$bookId"
+      fullPath: "/books/$bookId"
       preLoaderRoute: typeof BooksBookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/users': {
-      id: '/admin/users'
-      path: '/users'
-      fullPath: '/admin/users'
+    "/admin/users": {
+      id: "/admin/users"
+      path: "/users"
+      fullPath: "/admin/users"
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/shelves': {
-      id: '/admin/shelves'
-      path: '/shelves'
-      fullPath: '/admin/shelves'
+    "/admin/shelves": {
+      id: "/admin/shelves"
+      path: "/shelves"
+      fullPath: "/admin/shelves"
       preLoaderRoute: typeof AdminShelvesRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/libraries': {
-      id: '/admin/libraries'
-      path: '/libraries'
-      fullPath: '/admin/libraries'
+    "/admin/libraries": {
+      id: "/admin/libraries"
+      path: "/libraries"
+      fullPath: "/admin/libraries"
       preLoaderRoute: typeof AdminLibrariesRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/genres': {
-      id: '/admin/genres'
-      path: '/genres'
-      fullPath: '/admin/genres'
+    "/admin/genres": {
+      id: "/admin/genres"
+      path: "/genres"
+      fullPath: "/admin/genres"
       preLoaderRoute: typeof AdminGenresRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/books': {
-      id: '/admin/books'
-      path: '/books'
-      fullPath: '/admin/books'
+    "/admin/books": {
+      id: "/admin/books"
+      path: "/books"
+      fullPath: "/admin/books"
       preLoaderRoute: typeof AdminBooksRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/authors': {
-      id: '/admin/authors'
-      path: '/authors'
-      fullPath: '/admin/authors'
+    "/admin/authors": {
+      id: "/admin/authors"
+      path: "/authors"
+      fullPath: "/admin/authors"
       preLoaderRoute: typeof AdminAuthorsRouteImport
       parentRoute: typeof AdminRoute
     }

@@ -27,7 +27,7 @@ export class UserService {
     });
   }
 
-	static async getProfile(id: string) {
+  static async getProfile(id: string) {
     return await prisma.user.findUnique({
       where: { id },
       select: {
@@ -41,12 +41,12 @@ export class UserService {
             genre: true,
             shelf: {
               include: {
-                library: true
-              }
-            }
-          }
-        }
-      }
+                library: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 }

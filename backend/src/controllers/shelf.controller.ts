@@ -43,11 +43,15 @@ export const createShelf = async (req: Request, res: Response) => {
 export const updateShelf = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     const { label, libraryId, genreId } = req.body;
-    const updatedShelf = await ShelfService.updateShelf(id, { label, libraryId, genreId });
+    const updatedShelf = await ShelfService.updateShelf(id, {
+      label,
+      libraryId,
+      genreId,
+    });
     res.json(updatedShelf);
   } catch (err: any) {
     res.status(400).json({ error: err.message });
@@ -57,7 +61,7 @@ export const updateShelf = async (req: Request, res: Response) => {
 export const deleteShelf = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     await ShelfService.deleteShelf(id);

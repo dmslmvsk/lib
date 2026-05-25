@@ -1,4 +1,3 @@
-
 export interface Author {
   id: string
   name: string
@@ -14,8 +13,8 @@ export interface Book {
   title: string
   author: Author
   genre: Genre
-  description?: string 
-  rating: number      
-  
-  userId: string | null 
+  description?: string
+  rating: number
+
+  userId: string | null
 }

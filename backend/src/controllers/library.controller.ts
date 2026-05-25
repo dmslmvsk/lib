@@ -42,7 +42,7 @@ export const createLibrary = async (req: Request, res: Response) => {
 export const updateLibrary = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     const { name } = req.body;
@@ -56,7 +56,7 @@ export const updateLibrary = async (req: Request, res: Response) => {
 export const deleteLibrary = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-		if (typeof id !== "string") {
+    if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid ID provided" });
     }
     await LibraryService.deleteLibrary(id);

@@ -1,38 +1,36 @@
-import dotenv from "dotenv"
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 
-import express from "express"
-import type { Application, Request, Response } from 'express';
-import cors from "cors"
-import authorRoutes from "./routes/author.routes.js"
-import libraryRoutes from "./routes/library.routes.js"
-import genreRoutes from "./routes/genre.routes.js"
-import bookRoutes from "./routes/book.routes.js"
-import shelfRoutes from "./routes/shelf.routes.js"
-import authRoutes from "./routes/auth.routes.js"
+import express from "express";
+import type { Application, Request, Response } from "express";
+import cors from "cors";
+import authorRoutes from "./routes/author.routes.js";
+import libraryRoutes from "./routes/library.routes.js";
+import genreRoutes from "./routes/genre.routes.js";
+import bookRoutes from "./routes/book.routes.js";
+import shelfRoutes from "./routes/shelf.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import statsRoutes from "./routes/stats.routes.js";
 
 const app = express();
 
-
-
-
-
 app.use(express.json());
-app.use(cors({
-  origin: [
-    'https://dmslmvsk.dev',
-    'https://www.dmslmvsk.dev',
-    'http://localhost:5173'   
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-app.get("/health",(req:Request, res: Response) => {
-	res.status(200).json({status: "ok", message:"Library API is working"})
-})
+app.use(
+  cors({
+    origin: [
+      "https://dmslmvsk.dev",
+      "https://www.dmslmvsk.dev",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.get("/health", (req: Request, res: Response) => {
+  res.status(200).json({ status: "ok", message: "Library API is working" });
+});
 
 const apiRouter = express.Router();
 console.log("Мой DATABASE_URL:", process.env.DATABASE_URL);
@@ -42,8 +40,8 @@ apiRouter.use("/genres", genreRoutes);
 apiRouter.use("/books", bookRoutes);
 apiRouter.use("/shelves", shelfRoutes);
 apiRouter.use("/auth", authRoutes);
-apiRouter.use("/users",userRoutes);
-apiRouter.use("/stats",statsRoutes)
+apiRouter.use("/users", userRoutes);
+apiRouter.use("/stats", statsRoutes);
 app.use("/api", apiRouter);
 
-export default app
+export default app;

@@ -1,8 +1,8 @@
 export interface Author {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
 export interface CreateAuthorDTO {
-  name: string;
+  name: string
 }

@@ -1,9 +1,9 @@
-import { api } from "../axios";
-import type { Library, CreateLibraryDTO } from "../types/library.types";
+import { api } from "../axios"
+import type { Library, CreateLibraryDTO } from "../types/library.types"
 
 export const libraryService = {
   getAll: async () => {
-    const response = await api.get<Library[]>('/libraries')
+    const response = await api.get<Library[]>("/libraries")
     return response.data
   },
 
@@ -13,7 +13,7 @@ export const libraryService = {
   },
 
   create: async (data: CreateLibraryDTO) => {
-    const response = await api.post<Library>('/libraries', data)
+    const response = await api.post<Library>("/libraries", data)
     return response.data
   },
 
@@ -25,5 +25,5 @@ export const libraryService = {
   update: async ({ id, data }: { id: string; data: CreateLibraryDTO }) => {
     const response = await api.put<Library>(`/libraries/${id}`, data)
     return response.data
-  }
+  },
 }

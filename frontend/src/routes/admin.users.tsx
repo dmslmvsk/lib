@@ -1,40 +1,52 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { userService } from '../api/services/user.service'
-import { useState } from 'react'
-import { AdminPageTemplate, type TableColumn } from '@/components/admin-page-template'
-import { AdminModal, type FieldConfig } from '@/components/admin-modal'
-import type { User } from '@/api/types/user.types'
+import { createFileRoute } from "@tanstack/react-router"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { userService } from "../api/services/user.service"
+import { useState } from "react"
+import {
+  AdminPageTemplate,
+  type TableColumn,
+} from "@/components/admin-page-template"
+import { AdminModal, type FieldConfig } from "@/components/admin-modal"
+import type { User } from "@/api/types/user.types"
 
-export const Route = createFileRoute('/admin/users')({
+export const Route = createFileRoute("/admin/users")({
   component: UsersPage,
 })
 
 function UsersPage() {
   const queryClient = useQueryClient()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<User | null>(null)
 
-  const { data: users, isLoading, isError } = useQuery({
-    queryKey: ['users'],
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["users"],
     queryFn: userService.getAll,
-    retry: false
+    retry: false,
   })
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string, data: { role: "USER" | "ADMIN" } }) => 
-      userService.update({ id, data }),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string
+      data: { role: "USER" | "ADMIN" }
+    }) => userService.update({ id, data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ["users"] })
       closeModal()
     },
-    onError: (err: any) => alert(err.response?.data?.error || 'Update error')
+    onError: (err: any) => alert(err.response?.data?.error || "Update error"),
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => userService.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['users'] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
   })
 
   const openEditModal = (user: User) => {
@@ -49,9 +61,9 @@ function UsersPage() {
 
   const handleSave = (formData: Record<string, any>) => {
     if (editingItem) {
-      updateMutation.mutate({ 
-        id: editingItem.id, 
-        data: { role: formData.role } 
+      updateMutation.mutate({
+        id: editingItem.id,
+        data: { role: formData.role },
       })
     }
   }
@@ -61,54 +73,61 @@ function UsersPage() {
   )
 
   const columns: TableColumn<User>[] = [
-    { header: 'Email', render: (user) => user.email },
-    { 
-      header: 'Role', 
+    { header: "Email", render: (user) => user.email },
+    {
+      header: "Role",
       render: (user) => (
-        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold tracking-wider ${
-          user.role === 'ADMIN' 
-            ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30' 
-            : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
-        }`}>
+        <span
+          className={`rounded-sm px-2 py-0.5 text-[10px] font-bold tracking-wider ${
+            user.role === "ADMIN"
+              ? "border border-indigo-500/30 bg-indigo-500/20 text-indigo-400"
+              : "border border-zinc-700 bg-zinc-800 text-zinc-400"
+          }`}
+        >
           {user.role}
         </span>
-      ) 
+      ),
     },
-    { 
-      header: 'Borrowed', 
+    {
+      header: "Borrowed",
       render: (user) => (
         <span className="text-zinc-300">
-            {user.borrowedBooks?.length || 0} books
+          {user.borrowedBooks?.length || 0} books
         </span>
-      )
+      ),
     },
-    { 
-      header: 'Created At', 
-      render: (user) => new Date(user.createdAt).toLocaleDateString() 
+    {
+      header: "Created At",
+      render: (user) => new Date(user.createdAt).toLocaleDateString(),
     },
   ]
 
   const modalFields: FieldConfig[] = [
     {
-      name: 'email',
-      label: 'User Email',
-      type: 'text',
+      name: "email",
+      label: "User Email",
+      type: "text",
       disabled: true,
-      fullWidth: true
+      fullWidth: true,
     },
     {
-      name: 'role',
-      label: 'Account Role',
-      type: 'select',
+      name: "role",
+      label: "Account Role",
+      type: "select",
       required: true,
       options: [
-        { label: 'USER', value: 'USER' },
-        { label: 'ADMIN', value: 'ADMIN' }
-      ]
-    }
+        { label: "USER", value: "USER" },
+        { label: "ADMIN", value: "ADMIN" },
+      ],
+    },
   ]
 
-  if (isError) return <div className="text-red-500 p-4 font-mono">Error loading users... check console.</div>
+  if (isError)
+    return (
+      <div className="p-4 font-mono text-red-500">
+        Error loading users... check console.
+      </div>
+    )
 
   return (
     <>

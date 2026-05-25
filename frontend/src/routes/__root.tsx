@@ -1,8 +1,8 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
-import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import type { User } from '@/types/user'
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
+import type { User } from "@/types/user"
 
 interface RouterContext {
   auth: {
@@ -12,19 +12,19 @@ interface RouterContext {
 }
 
 const RootLayout = () => (
-  <div className="flex flex-col min-h-dvh bg-[#0a0a0a] text-zinc-200 selection:bg-indigo-500/30 font-sans">
+  <div className="flex min-h-dvh flex-col bg-[#0a0a0a] font-sans text-zinc-200 selection:bg-indigo-500/30">
     <Header />
-    
-    <main className="grow flex flex-col">
+
+    <main className="flex grow flex-col">
       <Outlet />
     </main>
 
     <Footer />
-    
+
     {import.meta.env.DEV && <TanStackRouterDevtools position="bottom-right" />}
   </div>
 )
 
-export const Route = createRootRouteWithContext<RouterContext>()({ 
-  component: RootLayout 
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: RootLayout,
 })

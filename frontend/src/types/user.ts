@@ -1,5 +1,5 @@
-export type User  = {
-	id: string
-	email:string
-	role : "ADMIN" | "USER"
+export type User = {
+  id: string
+  email: string
+  role: "ADMIN" | "USER"
 }
