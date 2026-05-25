@@ -1,7 +1,9 @@
 # Portfolio Library App
 
 A simple library management app for managing libraries, shelves, books, authors, genres, and users.
-This project was created for an Ausbildung application and demonstrates a full-stack setup with frontend, backend, and database.
+This project was developed as a coding challenge for an Ausbildung FI AE at Mittwald, demonstrating a complete full-stack setup with a frontend, backend, and database.
+
+![Home Page]<img width="1868" height="905" alt="Home" src="https://github.com/user-attachments/assets/f6bf503a-bf3b-4b4c-a8cf-867c1a6a0c75" />
 
 ---
 
@@ -41,21 +43,6 @@ There are three example env files in the repo:
 - `./backend/.env.example` — backend settings
 - `./frontend/.env.example` — frontend settings
 
-PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-Copy-Item backend\.env.example backend\.env
-Copy-Item frontend\.env.example frontend\.env
-```
-
-Linux / macOS:
-
-```bash
-cp .env.example .env
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
-```
 
 ### 2. Start the database
 
@@ -107,8 +94,37 @@ docker compose up -d --build
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-```markdown
-![Home screen](frontend/public/screenshots/home.png)
-```
+Here are key sections of the application. Click on any thumbnail to view the full-size image.
+
+<table width="100%">
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://github.com/user-attachments/assets/4fc80b53-3de6-4c8c-89e3-23383b2d3c73">
+        <img src="https://github.com/user-attachments/assets/4fc80b53-3de6-4c8c-89e3-23383b2d3c73" width="100%" alt="Login Page">
+      </a>
+      <p align="center"><b>Login Page</b></p>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://github.com/user-attachments/assets/dda76ccb-dd93-420e-85d9-1a8740a632ab">
+        <img src="https://github.com/user-attachments/assets/dda76ccb-dd93-420e-85d9-1a8740a632ab" width="100%" alt="Admin Panel">
+      </a>
+      <p align="center"><b>Admin Dashboard (Shelves Management)</b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://github.com/user-attachments/assets/d1347dc7-2602-4c29-abf3-77e44bf5a373">
+        <img src="https://github.com/user-attachments/assets/d1347dc7-2602-4c29-abf3-77e44bf5a373" width="100%" alt="User Dashboard">
+      </a>
+      <p align="center"><b>User Dashboard</b></p>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://github.com/user-attachments/assets/81a46609-b51e-43a8-ad80-08c490b5bdf2">
+        <img src="https://github.com/user-attachments/assets/81a46609-b51e-43a8-ad80-08c490b5bdf2" width="100%" alt="Book Page">
+      </a>
+      <p align="center"><b>Book Page</b></p>
+    </td>
+  </tr>
+</table>
