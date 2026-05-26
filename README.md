@@ -1,7 +1,7 @@
 # Portfolio Library App
 
 A simple library management app for managing libraries, shelves, books, authors, genres, and users.
-This project was developed as a coding challenge for an Ausbildung FI AE at Mittwald, demonstrating a complete full-stack setup with a frontend, backend, and database.
+This project was developed for a portfolio, demonstrating a complete full-stack setup with a frontend, backend, and database.
 
 <img width="1868" height="905" alt="Home" src="https://github.com/user-attachments/assets/f6bf503a-bf3b-4b4c-a8cf-867c1a6a0c75" />
 
