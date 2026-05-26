@@ -16,13 +16,13 @@ import statsRoutes from "./routes/stats.routes.js";
 const app = express();
 
 app.use(express.json());
+
+const allowedOrigins = process.env.CLIENT_URLS 
+  ? process.env.CLIENT_URLS.split(',') 
+  : ['http://localhost:5173'];
 app.use(
   cors({
-    origin: [
-      "https://dmslmvsk.dev",
-      "https://www.dmslmvsk.dev",
-      "http://localhost:5173",
-    ],
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

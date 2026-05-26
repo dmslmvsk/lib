@@ -24,6 +24,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       - JWT_SECRET=${JWT_SECRET}
+      - CLIENT_URLS=${CLIENT_URLS}
     depends_on:
       - db
     restart: always
