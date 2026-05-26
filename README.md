@@ -34,6 +34,17 @@ This learning project includes:
 
 ---
 
+##  Deployment & Infrastructure
+
+The application is fully deployed and running in a production environment. 
+This project is hosted on a **self-managed Ubuntu VPS** to demonstrate real-world infrastructure setup. 
+
+- **Containerization:** The frontend, backend, and database are orchestrated using **Docker Compose**.
+- **Web Server:** **Nginx** acts as a reverse proxy, handling traffic routing.
+- **Security:** The app is protected with **Cloudflare** (DNS/Proxy) and uses SSL certificates generated via **Let's Encrypt** (Certbot).
+
+---
+
 ## How to run
 
 ### 1. Configure `.env`
@@ -93,6 +104,8 @@ docker compose up -d --build
 - `VITE_API_URL` — frontend API base URL
 
 ---
+
+
 
 ## 📸 Screenshots
 
